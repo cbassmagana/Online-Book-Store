@@ -8,22 +8,30 @@ public class Branch {
     private String address;
     private List<Book> inventory;
     private List<Book> booksSold;
-    private double inventoryValue;
-    private double cashBalance;
 
     public Branch (String name, String address) {
         this.name = name;
         this.address = address;
         this.inventory = new ArrayList<>();
         this.booksSold = new ArrayList<>();
-        this.inventoryValue = 0;
-        this.cashBalance = 0;
     }
 
 
 
+    public void addBook(Book b) {
+        this.inventory.add(b);
+    }
 
+    public void removeBook(Book b) {
+        this.inventory.remove(b);
+    }
 
+    public void sellBook(Book b) {
+        if (!b.getReservedStatus()) {
+            this.inventory.remove(b);
+            this.booksSold.add(b);
+        }
+    }
 
 
     public String getName() {
@@ -43,10 +51,18 @@ public class Branch {
     }
 
     public double getInventoryValue() {
-        return this.inventoryValue;
+        double inventoryValue = 0;
+        for (Book b : this.inventory) {
+            inventoryValue += b.getPrice();
+        }
+        return inventoryValue;
     }
 
     public double getCashBalance() {
-        return this.cashBalance;
+        double cashValue = 0;
+        for (Book b : this.booksSold) {
+            cashValue += b.getPrice();
+        }
+        return cashValue;
     }
 }

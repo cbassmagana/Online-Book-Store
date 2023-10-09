@@ -17,8 +17,17 @@ public class Book {
 
 
 
+    public void setReservedStatus(boolean status) {
+        this.reservedStatus = status;
+    }
 
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
 
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
 
     public String getTitle() {
