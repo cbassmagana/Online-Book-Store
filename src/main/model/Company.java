@@ -7,12 +7,10 @@ public class Company {
     private String name;
     private List<Branch> stores;
 
-
-    public Company (String name) {
+    public Company(String name) {
         this.name = name;
         this.stores = new ArrayList<>();
     }
-
 
     public void addBranch(Branch br) {
         this.stores.add(br);
@@ -21,7 +19,6 @@ public class Company {
     public void closeBranch(Branch br) {
         this.stores.remove(br);
     }
-
 
     public List<Book> getInventory() {
         List<Book> totalInventory = new ArrayList<>();
@@ -45,7 +42,6 @@ public class Company {
         return totalBooksSold;
     }
 
-
     public double getInventoryValue() {
         double totalInventoryValue = 0;
 
@@ -63,7 +59,6 @@ public class Company {
         }
         return totalCashValue;
     }
-
 
     public String getName() {
         return this.name;

@@ -15,8 +15,6 @@ public class Book {
         this.reservedStatus = false;
     }
 
-
-
     public void setReservedStatus(boolean status) {
         this.reservedStatus = status;
     }
@@ -28,7 +26,6 @@ public class Book {
     public void setPrice(double price) {
         this.price = price;
     }
-
 
     public String getTitle() {
         return this.title;

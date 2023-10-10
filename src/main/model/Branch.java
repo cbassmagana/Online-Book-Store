@@ -9,14 +9,12 @@ public class Branch {
     private List<Book> inventory;
     private List<Book> booksSold;
 
-    public Branch (String name, String address) {
+    public Branch(String name, String address) {
         this.name = name;
         this.address = address;
         this.inventory = new ArrayList<>();
         this.booksSold = new ArrayList<>();
     }
-
-
 
     public void addBook(Book b) {
         this.inventory.add(b);
@@ -32,7 +30,6 @@ public class Branch {
             this.booksSold.add(b);
         }
     }
-
 
     public String getName() {
         return this.name;
