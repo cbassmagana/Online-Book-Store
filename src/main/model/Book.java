@@ -1,26 +1,40 @@
 package model;
 
+import java.util.List;
+import java.util.ArrayList;
+
 public class Book {
-    private String title;
-    private String author;
+    private final String title;
+    private final String author;
     private double price;
-    private int rating;
+    private List<Integer> ratings;
     private boolean reservedStatus;
 
-    public Book(String title, String author, double price, int rating) {
+    public Book(String title, String author, double price) {
         this.title = title;
         this.author = author;
         this.price = price;
-        this.rating = rating;
+        this.ratings = new ArrayList<>();
         this.reservedStatus = false;
+    }
+
+    public double rateBook(int rating) {
+        this.ratings.add(rating);
+        return getAverageRating();
+    }
+
+    public double getAverageRating() {
+        double sumOfRatings = 0;
+        double numberOfRatings = 0;
+        for (int r: this.ratings) {
+            sumOfRatings += r;
+            numberOfRatings += 1;
+        }
+        return sumOfRatings / numberOfRatings;
     }
 
     public void setReservedStatus(boolean status) {
         this.reservedStatus = status;
-    }
-
-    public void setRating(int rating) {
-        this.rating = rating;
     }
 
     public void setPrice(double price) {
@@ -39,11 +53,11 @@ public class Book {
         return this.price;
     }
 
-    public int getRating() {
-        return this.rating;
-    }
-
     public boolean getReservedStatus() {
         return this.reservedStatus;
+    }
+
+    public List<Integer> getRatings() {
+        return this.ratings;
     }
 }

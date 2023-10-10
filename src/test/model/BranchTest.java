@@ -17,9 +17,9 @@ public class BranchTest {
     @BeforeEach
     public void runBefore() {
         br1 = new Branch("Downtown", "123 Apple Rd");
-        b1 = new Book("Harry Potter", "JK Rowling", 10.99, 5);
-        b2 = new Book("Percy Jackson", "Rick Riordan", 9.99, 4);
-        b3 = new Book("Cat in the Hat", "Dr Suess", 7.99, 3);
+        b1 = new Book("Harry Potter", "JK Rowling", 10.99);
+        b2 = new Book("Percy Jackson", "Rick Riordan", 9.99);
+        b3 = new Book("Cat in the Hat", "Dr Suess", 7.99);
     }
 
     @Test
@@ -74,6 +74,17 @@ public class BranchTest {
         assertEquals(emptyListBooks, br1.getInventory());
         emptyListBooks.add(b1);
         assertEquals(emptyListBooks, br1.getBooksSold());
+    }
+
+    @Test
+    public void testSellBookReserved() {
+        br1.addBook(b1);
+        b1.setReservedStatus(true);
+        br1.sellBook(b1);
+        ArrayList<Book> emptyListBooks = new ArrayList<>();
+        assertEquals(emptyListBooks, br1.getBooksSold());
+        emptyListBooks.add(b1);
+        assertEquals(emptyListBooks, br1.getInventory());
     }
 
     @Test

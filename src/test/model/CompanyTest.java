@@ -23,9 +23,9 @@ class CompanyTest {
         br1 = new Branch("Downtown", "123 Apple Rd");
         br2 = new Branch("Waterfront", "321 Banana St");
         br3 = new Branch("University", "789 Dogwood Ave");
-        b1 = new Book("Harry Potter", "JK Rowling", 10.99, 5);
-        b2 = new Book("Percy Jackson", "Rick Riordan", 9.99, 4);
-        b3 = new Book("Cat in the Hat", "Dr Suess", 7.99, 3);
+        b1 = new Book("Harry Potter", "JK Rowling", 10.99);
+        b2 = new Book("Percy Jackson", "Rick Riordan", 9.99);
+        b3 = new Book("Cat in the Hat", "Dr Suess", 7.99);
     }
 
     @Test

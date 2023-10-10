@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Branch {
-    private String name;
-    private String address;
+    private final String name;
+    private final String address;
     private List<Book> inventory;
     private List<Book> booksSold;
 
