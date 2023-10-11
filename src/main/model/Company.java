@@ -8,7 +8,6 @@ public class Company {
     private final String name;
     private List<Branch> branches;
 
-
     // REQUIRES: non-empty string name
     // EFFECTS: instantiates a company with a given name and an empty list of branches
     public Company(String name) {
