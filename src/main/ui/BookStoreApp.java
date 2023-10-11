@@ -18,7 +18,7 @@ public class BookStoreApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: processes user input
+    // EFFECTS: processes user input until user quits the application
     private void runSite() {
         boolean keepGoing = true;
 
@@ -49,7 +49,6 @@ public class BookStoreApp {
             command = command.toLowerCase();
 
             if (command.equals("q")) {
-//                System.exit(0);
                 return false;
             } else if (command.equals("i")) {
                 makeCompany();
@@ -157,8 +156,8 @@ public class BookStoreApp {
         String title = input.next();
         System.out.println("\nWho is the author of the book: ");
         String author = input.next();
-        System.out.println("\nTo 2 decimals, what is the price of the book: ");
-        double price = input.nextDouble();
+        System.out.println("\nWhat is the price of the book: ");
+        double price = Math.floor(input.nextDouble() * 100) / 100;
 
         branch.addBook(new Book(title, author, price));
         System.out.println("\nThe book " + title + " has now been added!");
@@ -166,7 +165,7 @@ public class BookStoreApp {
 
     // MODIFIES: this
     // EFFECTS: prints to the terminal the name of all books in the inventory of company branch of
-    //          user's choice or of the entire company's inventory
+    //          user's choice, or of the entire company's inventory
     private void viewInventory() {
         System.out.println("\nTo view the inventory for the entire company, enter 0: ");
         System.out.println("\nTo view the inventory for a specific branch, enter 1: ");
@@ -192,7 +191,7 @@ public class BookStoreApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: removes user's choice of book from inventory of user's choice of company branch
+    // EFFECTS: removes user's choice of book from its respective branch's inventory
     private void removeABook() {
         System.out.println("\nWhich of the following branches would you like to remove a book from:");
         System.out.println("");
@@ -207,8 +206,8 @@ public class BookStoreApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: moves user's choice of book from inventory of user's choice of company branch into list of
-    //          books sold for the same company branch
+    // EFFECTS: moves user's choice of book from its respective branch's inventory into list of
+    //          books sold for the same branch
     private void sellABook() {
         System.out.println("\nWhich of the following branches would you like to sell a book from:");
         System.out.println("");
@@ -228,8 +227,8 @@ public class BookStoreApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: prints to the terminal the name of all books sold from the company branch of
-    //          user's choice or from the entire company
+    // EFFECTS: prints to the terminal the name of all books sold from user's choice of
+    //          company branch, or from the entire company
     private void viewBooksSold() {
         System.out.println("\nTo view the books sold for the entire company, enter 0: ");
         System.out.println("\nTo view the books sold at a specific branch, enter 1: ");
@@ -255,8 +254,8 @@ public class BookStoreApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: changes the reservation status of user's choice of book in the company to opposite of
-    //          the previous reservation status
+    // EFFECTS: changes the reservation status of user's choice of book to the opposite of
+    //          its previous reservation status
     private void changeReservation() {
         System.out.println("\nAt which branch would you like to change a book's reservation status:");
         System.out.println("");
@@ -279,7 +278,7 @@ public class BookStoreApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: changes the price of user's choice of book in the company user's choice of new price
+    // EFFECTS: changes the price of user's choice of book to a new price, specified by the user
     private void changePrice() {
         System.out.println("\nAt which branch would you like to change a book's price:");
         System.out.println("");
@@ -297,8 +296,8 @@ public class BookStoreApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: adds a rating of user's choice to list of ratings of user's choice of book in the company
-    //          and prints to terminal the new average rating of the book
+    // EFFECTS: adds the user's rating to the list of ratings for a book of the user's choosing
+    //          and prints to terminal the new average rating of said book
     private void rateBook() {
         System.out.println("\nAt which branch would you like to rate a book:");
         System.out.println("");
@@ -327,7 +326,7 @@ public class BookStoreApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: returns the book of the user's choosing in a given branch's inventory
+    // EFFECTS: returns the book of the user's choosing from a given branch's inventory
     private Book selectBook(Branch branch) {
         for (int i = 0; i < branch.getInventory().size(); i++) {
             System.out.println(i + " - " + branch.getInventory().get(i).getTitle());

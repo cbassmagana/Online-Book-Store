@@ -8,7 +8,6 @@ public class Company {
     private final String name;
     private List<Branch> branches;
 
-    // REQUIRES: non-empty string name
     // EFFECTS: instantiates a company with a given name and an empty list of branches
     public Company(String name) {
         this.name = name;
@@ -16,13 +15,13 @@ public class Company {
     }
 
     // MODIFIES: this
-    // EFFECTS: adds a branch to this list of branches
+    // EFFECTS: adds given branch to the list of branches
     public void addBranch(Branch br) {
         this.branches.add(br);
     }
 
     // MODIFIES: this
-    // EFFECTS: removes a branch from this list of branches
+    // EFFECTS: removes given branch from the list of branches
     public void closeBranch(Branch br) {
         this.branches.remove(br);
     }

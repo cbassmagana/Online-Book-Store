@@ -4,8 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.lang.Math;
 
-// A representation of a book with a title, author, price, reserved status
-// and a list of ratings
+// A representation of a book
 public class Book {
     private final String title;
     private final String author;
@@ -13,7 +12,6 @@ public class Book {
     private List<Integer> ratings;
     private boolean reservedStatus;
 
-    // REQUIRES: title and author are non-empty strings, price is to 2 decimals
     // EFFECTS: instantiates a book with a title, author, price, empty list of
     //          ratings and a not reserved status.
     public Book(String title, String author, double price) {
@@ -26,14 +24,13 @@ public class Book {
 
     // REQUIRES: 0 <= rating <= 5
     // MODIFIES: this
-    // EFFECTS: adds a rating to the list of ratings for this book and returns the
+    // EFFECTS: adds a given rating to the list of ratings for this book and returns the
     //          new average rating
     public double rateBook(int rating) {
         this.ratings.add(rating);
         return getAverageRating();
     }
 
-    // REQUIRES: this.ratings is a non-empty list
     // EFFECTS: returns the average rating of this book
     public double getAverageRating() {
         double sumOfRatings = 0;
@@ -46,12 +43,13 @@ public class Book {
         return Math.floor(averageRating * 10) / 10;
     }
 
-    public void setReservedStatus(boolean status) {
-        this.reservedStatus = status;
-    }
-
+    // EFFECTS: Sets this book's price to a given price (rounded down to 2 decimal points)
     public void setPrice(double price) {
         this.price = Math.floor(price * 100) / 100;
+    }
+
+    public void setReservedStatus(boolean status) {
+        this.reservedStatus = status;
     }
 
     public String getTitle() {
