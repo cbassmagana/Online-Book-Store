@@ -36,4 +36,16 @@ public class BookTest {
         assertEquals(2.5, b1.rateBook(1));
         assertEquals(2.5, b1.getAverageRating());
     }
+
+    @Test
+    public void testSetPrice() {
+        b1.setPrice(9.99);
+        assertEquals(9.99, b1.getPrice());
+        b1.setPrice(8.8);
+        assertEquals(8.80, b1.getPrice());
+        b1.setPrice(12.2228976);
+        assertEquals(12.22, b1.getPrice());
+        b1.setPrice(14.229999);
+        assertEquals(14.22, b1.getPrice());
+    }
 }

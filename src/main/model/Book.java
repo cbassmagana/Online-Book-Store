@@ -51,7 +51,7 @@ public class Book {
     }
 
     public void setPrice(double price) {
-        this.price = Math.floor(price * 10) / 10;;
+        this.price = Math.floor(price * 100) / 100;;
     }
 
     public String getTitle() {
