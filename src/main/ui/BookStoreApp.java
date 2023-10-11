@@ -34,7 +34,7 @@ public class BookStoreApp {
                 processCommand(command);
             }
         }
-        System.out.println("\nHave a good day!");
+        System.out.println("\nThank you for using our application, have a good day!");
     }
 
     // MODIFIES: this
@@ -62,6 +62,8 @@ public class BookStoreApp {
 
     // EFFECTS: prints the initializing options to the terminal
     private void displayInitialize() {
+        System.out.println("\nWelcome to our book company application! Follow the instructions to get started!");
+        System.out.println("");
         System.out.println("\tPress i to initialize your company.");
         System.out.println("\tOtherwise, press q to quit.");
         System.out.println("");
@@ -115,7 +117,7 @@ public class BookStoreApp {
     // MODIFIES: this
     // EFFECTS: creates a new company with a name of the user's choosing
     private void makeCompany() {
-        System.out.println("\nTo initialize your company, please enter the business' name:");
+        System.out.println("\nTo initialize your company, please enter the company's desired name:");
         String companyName = input.next();
         company = new Company(companyName);
         System.out.println("\nYour company " + companyName + " has now been created!");
@@ -173,6 +175,7 @@ public class BookStoreApp {
 
         if (location == 0) {
             System.out.println("\nThe company's inventory contains the following books: ");
+            System.out.println("");
             for (Book b : company.getInventory()) {
                 System.out.println(b.getTitle());
             }
@@ -236,6 +239,7 @@ public class BookStoreApp {
 
         if (location == 0) {
             System.out.println("\nThe company has sold the following books: ");
+            System.out.println("");
             for (Book b : company.getBooksSold()) {
                 System.out.println(b.getTitle());
             }
