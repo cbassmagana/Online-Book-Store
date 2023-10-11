@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.Math;
 
 // a representation of a store branch with a list of books sold and still in the store.
 public class Branch {
@@ -50,16 +51,17 @@ public class Branch {
         for (Book b : this.inventory) {
             inventoryValue += b.getPrice();
         }
-        return inventoryValue;
+        return Math.floor(inventoryValue * 100) / 100;
     }
 
     // EFFECTS: returns the value (in dollars) of all the books that have been sold
+    //          value is rounded to 2 decimals
     public double getCashValue() {
         double cashValue = 0;
         for (Book b : this.booksSold) {
             cashValue += b.getPrice();
         }
-        return cashValue;
+        return Math.floor(cashValue * 100) / 100;
     }
 
     public String getName() {

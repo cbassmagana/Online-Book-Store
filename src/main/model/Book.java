@@ -2,6 +2,7 @@ package model;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.lang.Math;
 
 // A representation of a book with a title, author, price, reserved status
 // and a list of ratings
@@ -41,7 +42,8 @@ public class Book {
             sumOfRatings += r;
             numberOfRatings += 1;
         }
-        return sumOfRatings / numberOfRatings;
+        double averageRating = sumOfRatings / numberOfRatings;
+        return Math.floor(averageRating * 10) / 10;
     }
 
     public void setReservedStatus(boolean status) {
@@ -49,7 +51,7 @@ public class Book {
     }
 
     public void setPrice(double price) {
-        this.price = price;
+        this.price = Math.floor(price * 10) / 10;;
     }
 
     public String getTitle() {

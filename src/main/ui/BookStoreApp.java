@@ -5,6 +5,7 @@ import model.Branch;
 import model.Company;
 
 import java.util.Scanner;
+import java.lang.Math;
 
 // Interface application for a book store company
 public class BookStoreApp {
@@ -87,40 +88,28 @@ public class BookStoreApp {
 
     // EFFECTS: decides what method to call based on what function the user wants to do
     private void processCommand(String command) {
-        switch (command) {
-            case "1":
-                openBranch();
-                break;
-            case "2":
-                viewBranches();
-                break;
-            case "3":
-                addABook();
-                break;
-            case "4":
-                viewInventory();
-                break;
-            case "5":
-                removeABook();
-                break;
-            case "6":
-                sellABook();
-                break;
-            case "7":
-                viewBooksSold();
-                break;
-            case "8":
-                changeReservation();
-                break;
-            case "9":
-                changePrice();
-                break;
-            case "10":
-                rateBook();
-                break;
-            default:
-                System.out.println("Selection not valid...");
-                System.out.println("");
+        if (command.equals("1")) {
+            openBranch();
+        } else if (command.equals("2")) {
+            viewBranches();
+        } else if (command.equals("3")) {
+            addABook();
+        } else if (command.equals("4")) {
+            viewInventory();
+        } else if (command.equals("5")) {
+            removeABook();
+        } else if (command.equals("6")) {
+            sellABook();
+        } else if (command.equals("7")) {
+            viewBooksSold();
+        } else if (command.equals("8")) {
+            changeReservation();
+        } else if (command.equals("9")) {
+            changePrice();
+        } else if (command.equals("10")) {
+            rateBook();
+        } else {
+            System.out.println("Selection not valid...");
         }
     }
 
@@ -192,10 +181,8 @@ public class BookStoreApp {
 
         } else if (location == 1) {
             System.out.println("\nWhich branches' inventory would you like to view:");
-            System.out.println("");
             Branch branch = selectBranch();
             System.out.println("\nThis branch's inventory contains the following books: ");
-
             for (Book b : branch.getInventory()) {
                 System.out.println(b.getTitle());
             }
@@ -257,10 +244,8 @@ public class BookStoreApp {
 
         } else if (location == 1) {
             System.out.println("\nWhich branch would you like to view:");
-            System.out.println("");
             Branch branch = selectBranch();
             System.out.println("\nThis branch has sold the following books: ");
-
             for (Book b : branch.getBooksSold()) {
                 System.out.println(b.getTitle());
             }
@@ -305,7 +290,7 @@ public class BookStoreApp {
         Book book = selectBook(branch);
 
         System.out.println("\nThe price is currently " + book.getPrice() + " dollars, enter the new price:");
-        double newPrice = input.nextDouble();
+        double newPrice = Math.floor(input.nextDouble() * 100) / 100;
         book.setPrice(newPrice);
         System.out.println("\nThe book's price is now " + newPrice + " dollars.");
         System.out.println("");
