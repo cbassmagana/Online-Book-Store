@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+// Unit tests for branch class
 public class BranchTest {
     Branch br1;
     Book b1;
@@ -122,6 +123,6 @@ public class BranchTest {
         br1.addBook(b3);
         br1.sellBook(b1);
         br1.sellBook(b2);
-        assertEquals(20.98, br1.getCashBalance());
+        assertEquals(20.98, br1.getCashValue());
     }
 }

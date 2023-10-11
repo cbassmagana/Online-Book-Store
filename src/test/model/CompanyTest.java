@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// Unit tests for company class
 class CompanyTest {
     Company company;
     Branch br1;
@@ -31,7 +32,7 @@ class CompanyTest {
     @Test
     public void testConstructor() {
         assertEquals("Bob's Book Stores", company.getName());
-        assertTrue(company.getStores().isEmpty());
+        assertTrue(company.getBranches().isEmpty());
         assertEquals(0, company.getInventoryValue());
         assertEquals(0, company.getCashValue());
         ArrayList<Book> emptyListBooks = new ArrayList<>();
@@ -44,7 +45,7 @@ class CompanyTest {
         company.addBranch(br1);
         ArrayList<Branch> answer = new ArrayList<>();
         answer.add(br1);
-        assertEquals(answer, company.getStores());
+        assertEquals(answer, company.getBranches());
     }
 
     @Test
@@ -56,7 +57,7 @@ class CompanyTest {
         answer.add(br1);
         answer.add(br2);
         answer.add(br3);
-        assertEquals(answer, company.getStores());
+        assertEquals(answer, company.getBranches());
     }
 
     @Test
@@ -68,10 +69,10 @@ class CompanyTest {
         ArrayList<Branch> answer = new ArrayList<>();
         answer.add(br1);
         answer.add(br3);
-        assertEquals(answer, company.getStores());
+        assertEquals(answer, company.getBranches());
         company.closeBranch(br1);
         answer.remove(0);
-        assertEquals(answer, company.getStores());
+        assertEquals(answer, company.getBranches());
     }
 
     @Test
