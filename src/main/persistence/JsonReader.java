@@ -3,13 +3,11 @@ package persistence;
 import model.Company;
 import model.Branch;
 import model.Book;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
-
 import org.json.*;
 
 // Represents a reader that reads the company from JSON data stored in file
@@ -32,7 +30,7 @@ public class JsonReader {
     // EFFECTS: reads source file as string and returns it
     private String readFile(String source) throws IOException {
         StringBuilder contentBuilder = new StringBuilder();
-        try (Stream<String> stream = Files.lines( Paths.get(source), StandardCharsets.UTF_8)) {
+        try (Stream<String> stream = Files.lines(Paths.get(source), StandardCharsets.UTF_8)) {
             stream.forEach(s -> contentBuilder.append(s));
         }
         return contentBuilder.toString();
@@ -73,23 +71,23 @@ public class JsonReader {
         JSONArray jsonArray = jsonObject.getJSONArray("inventory");
         for (Object book : jsonArray) {
             JSONObject nextBook = (JSONObject) book;
-            addBook(branch, nextBook);
+            addBook(branch, nextBook, false);
         }
     }
 
     // MODIFIES: company, branch
-    // EFFECTS: parses sold books from JSON object and adds them to branch
+    // EFFECTS: parses sold books from JSON object and adds them to branch inventory before selling
     private void addBooksSold(Branch branch, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("sales");
         for (Object book : jsonArray) {
             JSONObject nextBook = (JSONObject) book;
-            addBook(branch, nextBook);
+            addBook(branch, nextBook, true);
         }
     }
 
     // MODIFIES: company, branch
-    // EFFECTS: adds next book from JsonArray into branch
-    private void addBook(Branch branch, JSONObject jsonObject) {
+    // EFFECTS: adds next book from JsonArray into branch, sells afterwards if applicable
+    private void addBook(Branch branch, JSONObject jsonObject, boolean sold) {
         String title = jsonObject.getString("title");
         String author = jsonObject.getString("author");
         double price = jsonObject.getDouble("price");
@@ -103,5 +101,9 @@ public class JsonReader {
             book.rateBook(nextRating);
         }
         branch.addBook(book);
+
+        if (sold) {
+            branch.sellBook(book);
+        }
     }
 }

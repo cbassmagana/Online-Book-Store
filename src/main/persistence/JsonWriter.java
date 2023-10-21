@@ -1,8 +1,7 @@
 package persistence;
+
 import model.Company;
 import org.json.JSONObject;
-
-
 import java.io.*;
 
 // Represents a writer that writes JSON representation of the company to file

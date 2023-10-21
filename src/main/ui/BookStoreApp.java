@@ -5,10 +5,8 @@ import model.Branch;
 import model.Company;
 import persistence.JsonReader;
 import persistence.JsonWriter;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
 import java.util.Scanner;
 import java.lang.Math;
 
@@ -20,7 +18,7 @@ public class BookStoreApp {
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
-    // EFFECTS: runs the book store application
+    // EFFECTS: runs the book store application and instantiates JSON
     public BookStoreApp() {
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
@@ -48,7 +46,8 @@ public class BookStoreApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: initializes the company and the input scanner
+    // EFFECTS: initializes the company and the input scanner, can load company status
+    //          or start from scratch
     private boolean initialize() {
         while (true) {
             input = new Scanner(System.in);
@@ -66,7 +65,7 @@ public class BookStoreApp {
             } else if (command.equals("l")) {
                 loadCompany();
                 return true;
-            }else {
+            } else {
                 System.out.println("Selection not valid, please try again.");
                 System.out.println("");
             }
@@ -102,6 +101,7 @@ public class BookStoreApp {
         System.out.println("");
     }
 
+    @SuppressWarnings("methodlength")
     // EFFECTS: decides what method to call based on what function the user wants to do
     private void processCommand(String command) {
         if (command.equals("1")) {
@@ -126,8 +126,6 @@ public class BookStoreApp {
             rateBook();
         } else if (command.equals("s")) {
             saveCompany();
-        } else if (command.equals("t")) {
-            getName();
         } else {
             System.out.println("Selection not valid...");
         }
@@ -359,10 +357,7 @@ public class BookStoreApp {
         return branch.getInventory().get(bookIndex);
     }
 
-
-
-
-    // EFFECTS: saves the workroom to file
+    // EFFECTS: saves the company to file
     private void saveCompany() {
         try {
             jsonWriter.open();
@@ -375,7 +370,7 @@ public class BookStoreApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: loads workroom from file
+    // EFFECTS: loads the company from file
     private void loadCompany() {
         try {
             company = jsonReader.read();
@@ -383,12 +378,5 @@ public class BookStoreApp {
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
-    }
-
-
-
-
-    public void getName() {
-        System.out.println(company.getName());
     }
 }

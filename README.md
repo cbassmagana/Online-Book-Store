@@ -24,6 +24,8 @@ In addition to the inventory, it will also keep track of
 information about the books that have been sold from each 
 branch.
 
+Note: JSON persistence classes modelled around Serialization Demo.
+
 ## User Stories
 
 - As a user, I want to be able to add a book to my inventory 
