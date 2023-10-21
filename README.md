@@ -51,5 +51,7 @@ the inventory in each of the store branches.
 revenue each branch has done so far.
 - As a user, I want to be able to select a book and change its
   price.
-- As a user, I want to be able to select an author and see their
-average book rating and a list of all their books in the store.
+- As a user, I want to be able to have the option to save the
+  entire state of my application to file before quitting.
+- As a user, I want to be able to reload the entire state of my 
+  application from file if I so choose.

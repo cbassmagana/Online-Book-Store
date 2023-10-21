@@ -1,11 +1,15 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.Math;
 
 // a representation of a branch of a book store company.
-public class Branch {
+public class Branch implements Writable {
     private final String name;
     private final String address;
     private List<Book> inventory;
@@ -77,5 +81,43 @@ public class Branch {
 
     public List<Book> getBooksSold() {
         return this.booksSold;
+    }
+
+
+
+
+
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("address", address);
+        json.put("inventory", inventoryToJson());
+        json.put("sales", salesToJson());
+        return json;
+    }
+
+    // EFFECTS: returns things in this workroom as a JSON array
+    private JSONArray inventoryToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Book b : inventory) {
+            jsonArray.put(b.toJson());
+        }
+
+        return jsonArray;
+    }
+
+
+    // EFFECTS: returns things in this workroom as a JSON array
+    private JSONArray salesToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Book b : booksSold) {
+            jsonArray.put(b.toJson());
+        }
+
+        return jsonArray;
     }
 }

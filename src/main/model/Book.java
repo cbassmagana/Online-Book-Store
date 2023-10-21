@@ -1,11 +1,15 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.lang.Math;
 
 // A representation of a book
-public class Book {
+public class Book implements Writable {
     private final String title;
     private final String author;
     private double price;
@@ -70,5 +74,31 @@ public class Book {
 
     public List<Integer> getRatings() {
         return this.ratings;
+    }
+
+
+
+
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("title", title);
+        json.put("author", author);
+        json.put("price", price);
+        json.put("reserved", reservedStatus);
+        json.put("ratings", ratingsToJson());
+        return json;
+    }
+
+    // EFFECTS: returns things in this workroom as a JSON array
+    private JSONArray ratingsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (int r : ratings) {
+            jsonArray.put(r);
+        }
+
+        return jsonArray;
     }
 }

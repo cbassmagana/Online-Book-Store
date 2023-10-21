@@ -3,17 +3,27 @@ package ui;
 import model.Book;
 import model.Branch;
 import model.Company;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 import java.lang.Math;
 
 // Interface application for a book store company
 public class BookStoreApp {
+    private static final String JSON_STORE = "./data/company.json";
     private Company company;
     private Scanner input;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // EFFECTS: runs the book store application
     public BookStoreApp() {
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
         runSite();
     }
 
@@ -53,7 +63,10 @@ public class BookStoreApp {
             } else if (command.equals("i")) {
                 makeCompany();
                 return true;
-            } else {
+            } else if (command.equals("l")) {
+                loadCompany();
+                return true;
+            }else {
                 System.out.println("Selection not valid, please try again.");
                 System.out.println("");
             }
@@ -64,7 +77,8 @@ public class BookStoreApp {
     private void displayInitialize() {
         System.out.println("\nWelcome to our book company application! Follow the instructions to get started!");
         System.out.println("");
-        System.out.println("\tPress i to initialize your company.");
+        System.out.println("\tPress i to initialize a new company from scratch.");
+        System.out.println("\tPress l to load in the company saved on file.");
         System.out.println("\tOtherwise, press q to quit.");
         System.out.println("");
     }
@@ -82,8 +96,9 @@ public class BookStoreApp {
         System.out.println("\t7 - View all of the books sold");
         System.out.println("\t8 - Change the reservation status of a book");
         System.out.println("\t9 - Change the price of a book");
-        System.out.println("\t10 - Rate a book");
-        System.out.println("\t0 - quit the application");
+        System.out.println("\t10- Rate a book");
+        System.out.println("\ts - Save the company status to file");
+        System.out.println("\t0 - Quit the application");
         System.out.println("");
     }
 
@@ -109,7 +124,9 @@ public class BookStoreApp {
             changePrice();
         } else if (command.equals("10")) {
             rateBook();
-        } else {
+        } else if (command.equals("s")) {
+            saveCompany();
+        }else {
             System.out.println("Selection not valid...");
         }
     }
@@ -338,5 +355,31 @@ public class BookStoreApp {
         System.out.println("\nEnter the number corresponding to the book here: ");
         int bookIndex = input.nextInt();
         return branch.getInventory().get(bookIndex);
+    }
+
+
+
+
+    // EFFECTS: saves the workroom to file
+    private void saveCompany() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(company);
+            jsonWriter.close();
+            System.out.println("Saved " + company.getName() + " to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads workroom from file
+    private void loadCompany() {
+        try {
+            company = jsonReader.read();
+            System.out.println("Loaded " + company.getName() + " from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
     }
 }
