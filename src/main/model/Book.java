@@ -76,11 +76,8 @@ public class Book implements Writable {
         return this.ratings;
     }
 
-
-
-
-
     @Override
+    // EFFECTS: returns this book as a JSON object to be stored
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("title", title);
@@ -91,14 +88,12 @@ public class Book implements Writable {
         return json;
     }
 
-    // EFFECTS: returns things in this workroom as a JSON array
+    // EFFECTS: returns this book's ratings as a JSON array
     private JSONArray ratingsToJson() {
         JSONArray jsonArray = new JSONArray();
-
         for (int r : ratings) {
             jsonArray.put(r);
         }
-
         return jsonArray;
     }
 }

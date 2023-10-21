@@ -82,13 +82,8 @@ public class Company implements Writable {
         return this.branches;
     }
 
-
-
-
-
-
-
     @Override
+    // EFFECTS: stores the company as a JSON object
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("name", name);
@@ -96,14 +91,12 @@ public class Company implements Writable {
         return json;
     }
 
-    // EFFECTS: returns things in this workroom as a JSON array
+    // EFFECTS: returns the company's branches as a JSON array
     private JSONArray branchesToJson() {
         JSONArray jsonArray = new JSONArray();
-
         for (Branch br : branches) {
             jsonArray.put(br.toJson());
         }
-
         return jsonArray;
     }
 }

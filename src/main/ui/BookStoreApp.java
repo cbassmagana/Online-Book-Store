@@ -126,7 +126,9 @@ public class BookStoreApp {
             rateBook();
         } else if (command.equals("s")) {
             saveCompany();
-        }else {
+        } else if (command.equals("t")) {
+            getName();
+        } else {
             System.out.println("Selection not valid...");
         }
     }
@@ -381,5 +383,12 @@ public class BookStoreApp {
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
+    }
+
+
+
+
+    public void getName() {
+        System.out.println(company.getName());
     }
 }

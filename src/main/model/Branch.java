@@ -83,12 +83,8 @@ public class Branch implements Writable {
         return this.booksSold;
     }
 
-
-
-
-
-
     @Override
+    // EFFECTS: returns this branch as a JSON object to be stored
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("name", name);
@@ -98,26 +94,22 @@ public class Branch implements Writable {
         return json;
     }
 
-    // EFFECTS: returns things in this workroom as a JSON array
+    // EFFECTS: returns this branches' list of inventory books as a JSON array
     private JSONArray inventoryToJson() {
         JSONArray jsonArray = new JSONArray();
 
         for (Book b : inventory) {
             jsonArray.put(b.toJson());
         }
-
         return jsonArray;
     }
 
-
-    // EFFECTS: returns things in this workroom as a JSON array
+    // EFFECTS: returns this branches' list of books sold as a JSON array
     private JSONArray salesToJson() {
         JSONArray jsonArray = new JSONArray();
-
         for (Book b : booksSold) {
             jsonArray.put(b.toJson());
         }
-
         return jsonArray;
     }
 }
