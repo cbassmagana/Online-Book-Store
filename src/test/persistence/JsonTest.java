@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-// Contains methods to be used in subclasses' tests for JSON
+// Used in subclasses' tests for JSON to compare JSONObjects to Books and Branches
 public class JsonTest {
 
     protected void checkBook(String title, String author, double price, boolean reserved,

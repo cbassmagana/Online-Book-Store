@@ -65,8 +65,8 @@ public class JsonReader {
         company.addBranch(branch);
     }
 
-    // MODIFIES: company, branch
-    // EFFECTS: parses inventory books from JSON object and adds them to branch
+    // MODIFIES: branch
+    // EFFECTS: parses inventory books from JSON object and adds them to branch inventory
     private void addBooksInventory(Branch branch, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("inventory");
         for (Object book : jsonArray) {
@@ -75,7 +75,7 @@ public class JsonReader {
         }
     }
 
-    // MODIFIES: company, branch
+    // MODIFIES: branch
     // EFFECTS: parses sold books from JSON object and adds them to branch inventory before selling
     private void addBooksSold(Branch branch, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("sales");
@@ -85,7 +85,7 @@ public class JsonReader {
         }
     }
 
-    // MODIFIES: company, branch
+    // MODIFIES: branch
     // EFFECTS: adds next book from JsonArray into branch, sells afterwards if applicable
     private void addBook(Branch branch, JSONObject jsonObject, boolean sold) {
         String title = jsonObject.getString("title");

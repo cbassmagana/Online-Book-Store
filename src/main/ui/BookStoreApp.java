@@ -357,20 +357,20 @@ public class BookStoreApp {
         return branch.getInventory().get(bookIndex);
     }
 
-    // EFFECTS: saves the company to file
+    // EFFECTS: saves the company to file, prints message if unable to write to the file
     private void saveCompany() {
         try {
             jsonWriter.open();
             jsonWriter.write(company);
             jsonWriter.close();
-            System.out.println("Saved " + company.getName() + " to " + JSON_STORE);
+            System.out.println(company.getName() + "'s status has been saved to " + JSON_STORE);
         } catch (FileNotFoundException e) {
             System.out.println("Unable to write to file: " + JSON_STORE);
         }
     }
 
     // MODIFIES: this
-    // EFFECTS: loads the company from file
+    // EFFECTS: loads the company from file, prints message if unable to read the file
     private void loadCompany() {
         try {
             company = jsonReader.read();

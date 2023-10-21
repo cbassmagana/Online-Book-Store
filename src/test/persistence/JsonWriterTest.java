@@ -4,17 +4,13 @@ import model.Company;
 import model.Branch;
 import model.Book;
 import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
+// Unit tests for class JsonWriter
 class JsonWriterTest extends JsonTest {
-    //NOTE TO CPSC 210 STUDENTS: the strategy in designing tests for the JsonWriter is to
-    //write data to a file and then use the reader to read it back in and check that we
-    //read in a copy of what was written out.
 
     @Test
     void testWriterInvalidFile() {
@@ -24,7 +20,7 @@ class JsonWriterTest extends JsonTest {
             writer.open();
             fail("IOException was expected");
         } catch (IOException e) {
-            // pass
+            // expected
         }
     }
 
@@ -32,12 +28,12 @@ class JsonWriterTest extends JsonTest {
     void testWriterEmptyCompany() {
         try {
             Company company = new Company("Bookmania");
-            JsonWriter writer = new JsonWriter("./data/testEmptyCompany.json");
+            JsonWriter writer = new JsonWriter("./data/testWriterEmptyCompany.json");
             writer.open();
             writer.write(company);
             writer.close();
 
-            JsonReader reader = new JsonReader("./data/testEmptyCompany.json");
+            JsonReader reader = new JsonReader("./data/testWriterEmptyCompany.json");
             company = reader.read();
             assertEquals("Bookmania", company.getName());
             assertEquals(0, company.getBranches().size());
@@ -46,6 +42,7 @@ class JsonWriterTest extends JsonTest {
         }
     }
 
+    @SuppressWarnings("methodlength")
     @Test
     void testWriterUsedCompany() {
         try {
@@ -53,12 +50,9 @@ class JsonWriterTest extends JsonTest {
 
             Book HP = new Book("Harry Potter", "JK Rowling", 10.99);
             HP.setReservedStatus(true);
-
             Book PJ = new Book("Percy Jackson", "Rick Riordan", 12.99);
             PJ.rateBook(3);
-
             Book GOT = new Book("Game of Thrones", "George Martin", 11.99);
-
             Book LOTR = new Book("Lord of the Rings", "Tolkien", 19.98);
             LOTR.rateBook(4);
             LOTR.rateBook(3);
@@ -66,7 +60,6 @@ class JsonWriterTest extends JsonTest {
             Branch VB = new Branch("Vancouver Books", "123 Granville St");
             VB.addBook(HP);
             VB.addBook(LOTR);
-
             Branch SB = new Branch("Surrey Books", "123 Cloverdale Ave");
             SB.addBook(PJ);
             SB.addBook(GOT);
@@ -75,12 +68,12 @@ class JsonWriterTest extends JsonTest {
             company.addBranch(VB);
             company.addBranch(SB);
 
-            JsonWriter writer = new JsonWriter("./data/testUsedCompany.json");
+            JsonWriter writer = new JsonWriter("./data/testWriterUsedCompany.json");
             writer.open();
             writer.write(company);
             writer.close();
 
-            JsonReader reader = new JsonReader("./data/testUsedCompany.json");
+            JsonReader reader = new JsonReader("./data/testWriterUsedCompany.json");
             company = reader.read();
             assertEquals("Bookmania", company.getName());
 
@@ -94,20 +87,16 @@ class JsonWriterTest extends JsonTest {
             assertEquals(1, branches.get(1).getInventory().size());
             assertEquals(1, branches.get(1).getBooksSold().size());
 
-            ArrayList<Integer> noRatings = new ArrayList<Integer>();
+            ArrayList<Integer> noRatings = new ArrayList<>();
             noRatings.add(3);
 
             checkBook("Harry Potter","JK Rowling",10.99, true,
-                    new ArrayList<Integer>(), branches.get(0).getInventory().get(0));
-
+                    new ArrayList<>(), branches.get(0).getInventory().get(0));
             checkBook("Percy Jackson","Rick Riordan",12.99, false,
                     noRatings, branches.get(1).getInventory().get(0));
-
             checkBook("Game of Thrones","George Martin",11.99, false,
-                    new ArrayList<Integer>(), branches.get(1).getBooksSold().get(0));
-
+                    new ArrayList<>(), branches.get(1).getBooksSold().get(0));
             noRatings.add(0, 4);
-
             checkBook("Lord of the Rings","Tolkien",19.98, false,
                     noRatings, branches.get(0).getInventory().get(1));
 

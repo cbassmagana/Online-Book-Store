@@ -24,7 +24,7 @@ In addition to the inventory, it will also keep track of
 information about the books that have been sold from each 
 branch.
 
-Note: JSON persistence classes modelled around Serialization Demo.
+Note: JSON persistence classes modelled around Serialization Demo (UBC CPSC 210).
 
 ## User Stories
 
