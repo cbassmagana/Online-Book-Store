@@ -32,11 +32,9 @@ public class JsonReader {
     // EFFECTS: reads source file as string and returns it
     private String readFile(String source) throws IOException {
         StringBuilder contentBuilder = new StringBuilder();
-
         try (Stream<String> stream = Files.lines( Paths.get(source), StandardCharsets.UTF_8)) {
             stream.forEach(s -> contentBuilder.append(s));
         }
-
         return contentBuilder.toString();
     }
 
@@ -49,7 +47,7 @@ public class JsonReader {
     }
 
     // MODIFIES: company
-    // EFFECTS: parses thingies from JSON object and adds them to workroom
+    // EFFECTS: parses branches from JSON object and adds them to company
     private void addBranches(Company company, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("branches");
         for (Object branch : jsonArray) {
@@ -58,21 +56,19 @@ public class JsonReader {
         }
     }
 
-    // MODIFIES: wr
-    // EFFECTS: parses thingy from JSON object and adds it to workroom
+    // MODIFIES: company
+    // EFFECTS: adds next branch from JsonArray into company
     private void addBranch(Company company, JSONObject jsonObject) {
         String name = jsonObject.getString("name");
         String address = jsonObject.getString("address");
         Branch branch = new Branch(name, address);
-
         addBooksInventory(branch, jsonObject);
         addBooksSold(branch, jsonObject);
         company.addBranch(branch);
     }
 
-
-    // MODIFIES: wr
-    // EFFECTS: parses thingies from JSON object and adds them to workroom
+    // MODIFIES: company, branch
+    // EFFECTS: parses inventory books from JSON object and adds them to branch
     private void addBooksInventory(Branch branch, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("inventory");
         for (Object book : jsonArray) {
@@ -81,9 +77,8 @@ public class JsonReader {
         }
     }
 
-
-    // MODIFIES: wr
-    // EFFECTS: parses thingies from JSON object and adds them to workroom
+    // MODIFIES: company, branch
+    // EFFECTS: parses sold books from JSON object and adds them to branch
     private void addBooksSold(Branch branch, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("sales");
         for (Object book : jsonArray) {
@@ -92,8 +87,8 @@ public class JsonReader {
         }
     }
 
-    // MODIFIES: wr
-    // EFFECTS: parses thingy from JSON object and adds it to workroom
+    // MODIFIES: company, branch
+    // EFFECTS: adds next book from JsonArray into branch
     private void addBook(Branch branch, JSONObject jsonObject) {
         String title = jsonObject.getString("title");
         String author = jsonObject.getString("author");

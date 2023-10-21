@@ -97,7 +97,6 @@ public class Branch implements Writable {
     // EFFECTS: returns this branches' list of inventory books as a JSON array
     private JSONArray inventoryToJson() {
         JSONArray jsonArray = new JSONArray();
-
         for (Book b : inventory) {
             jsonArray.put(b.toJson());
         }
