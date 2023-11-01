@@ -1,0 +1,62 @@
+{
+    "name": "Bookmania",
+    "branches": [
+        {
+            "address": "123",
+            "name": "Vancouver",
+            "inventory": [{
+                "reserved": false,
+                "author": "rick",
+                "price": 7.89,
+                "ratings": [],
+                "title": "percy"
+            }],
+            "sales": [{
+                "reserved": false,
+                "author": "jk",
+                "price": 12.99,
+                "ratings": [],
+                "title": "HP"
+            }]
+        },
+        {
+            "address": "456",
+            "name": "Surrey",
+            "inventory": [{
+                "reserved": true,
+                "author": "tolk",
+                "price": 12.22,
+                "ratings": [],
+                "title": "LOTR"
+            }],
+            "sales": []
+        },
+        {
+            "address": "678",
+            "name": "Richmond",
+            "inventory": [],
+            "sales": [{
+                "reserved": false,
+                "author": "GM",
+                "price": 12.24,
+                "ratings": [
+                    3,
+                    4
+                ],
+                "title": "GOT"
+            }]
+        },
+        {
+            "address": "123 Dogwood St",
+            "name": "Qualicum Books",
+            "inventory": [{
+                "reserved": true,
+                "author": "Waldo?",
+                "price": 12.22,
+                "ratings": [5],
+                "title": "Where's Waldo?"
+            }],
+            "sales": []
+        }
+    ]
+}
