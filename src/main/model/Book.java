@@ -9,8 +9,8 @@ import java.lang.Math;
 
 // A representation of a book
 public class Book implements Writable {
-    private final String title;
-    private final String author;
+    private String title;
+    private String author;
     private double price;
     private List<Integer> ratings;
     private boolean reservedStatus;
@@ -50,6 +50,10 @@ public class Book implements Writable {
     public void setPrice(double price) {
         this.price = Math.floor(price * 100) / 100;
     }
+
+    public void setTitle(String title) {this.title = title;}
+
+    public void setAuthor(String author) {this.author = author;}
 
     public void setReservedStatus(boolean status) {
         this.reservedStatus = status;

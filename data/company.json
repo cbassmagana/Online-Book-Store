@@ -5,11 +5,11 @@
             "address": "123",
             "name": "Vancouver",
             "inventory": [{
-                "reserved": false,
-                "author": "rick",
-                "price": 7.89,
+                "reserved": true,
+                "author": "rickkk",
+                "price": 17.88,
                 "ratings": [],
-                "title": "percy"
+                "title": "percyyy"
             }],
             "sales": [{
                 "reserved": false,

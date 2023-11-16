@@ -5,21 +5,35 @@ import model.Branch;
 import model.Company;
 import persistence.JsonReader;
 import persistence.JsonWriter;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 import java.lang.Math;
+import java.util.ArrayList;
 
 // Interface application for a book store company
-public class BookStoreApp {
+public class BookStoreApp extends JFrame {
     private static final String JSON_STORE = "./data/company.json";
     private Company company;
     private Scanner input;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
+    private static final int WIDTH = 600;
+    private static final int HEIGHT = 400;
+    private CardLayout cardLayout;
+    private JPanel cardPanel;
 
     // EFFECTS: runs the book store application and instantiates JSON
     public BookStoreApp() {
+        super("Book Store Manager");
+        cardLayout = new CardLayout();
+        cardPanel = new JPanel(cardLayout);
+
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
         runSite();
@@ -29,6 +43,10 @@ public class BookStoreApp {
     // EFFECTS: processes user input until user quits the application
     private void runSite() {
         boolean keepGoing = true;
+
+        initializeCards();
+
+        cardLayout.show(cardPanel, "introPage");
 
         keepGoing = initialize();
 
@@ -43,6 +61,590 @@ public class BookStoreApp {
             }
         }
         System.out.println("\nThank you for using our application, have a good day!");
+    }
+
+    private void initializeCards() {
+        cardPanel.add(createIntroPage(), "introPage");
+        cardPanel.add(createMenuPage(), "menuPage");
+        add(cardPanel);
+
+        setSize(WIDTH, HEIGHT);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        setVisible(true);
+    }
+
+    private JPanel createViewListPage(String message, ArrayList list, Branch branch) {
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(4, 1));
+        JTextArea textArea = new JTextArea();
+
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        textArea.setEditable(false);
+
+        String result = "";
+        for (int i=0; i < list.size(); i++) {
+            result = result + "\n" + list.get(i);
+        }
+
+        textArea.setText(result);
+
+        panel.add(placeHeaderMessage(message));
+        panel.add(textArea);
+
+        if (branch == null) {
+            panel.add(placeMenuButton());
+        } else {
+            panel.add(returnToBranchButton(branch));
+        }
+        panel.add(placeQuitButton());
+        setVisible(true);
+
+        return panel;
+    }
+
+    private JPanel placeMenuButton() {
+        JButton b1 = new JButton("Return to Menu");
+
+        JPanel buttonRow = formatButtonRow(b1);
+        buttonRow.setSize(300, 0);
+
+        b1.addActionListener(e -> {
+            cardLayout.show(cardPanel, "menuPage");
+        });
+
+        return buttonRow;
+    }
+
+    private JPanel editBookPage(Branch branch, Book book) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(15, 1));
+        JTextField textFieldTitle = new JTextField();
+        textFieldTitle.setText(book.getTitle());
+        JTextField textFieldAuthor = new JTextField();
+        textFieldAuthor.setText(book.getAuthor());
+        JTextField textFieldPrice = new JTextField();
+        textFieldPrice.setText(String.valueOf(book.getPrice()));
+
+        panel.add(placeHeaderMessage("Name of book:"));
+        panel.add(textFieldTitle);
+        panel.add(placeHeaderMessage("Author of book:"));
+        panel.add(textFieldAuthor);
+        panel.add(placeHeaderMessage("Price of book:"));
+        panel.add(textFieldPrice);
+        panel.add(placeHeaderMessage("Reservation status:"));
+        panel.add(placeOnOffButton(book));
+
+        panel.add(placeSellRemoveButtons(branch, book));
+
+
+//        panel.add(placeSubmitButton(book, Double.parseDouble(textFieldPrice.getText()), textFieldTitle.getText(),
+//                textFieldAuthor.getText()));
+
+        JButton b1 = new JButton("Save Changes");
+
+        JPanel buttonRowOfOne = formatButtonRow(b1);
+
+        b1.addActionListener(e -> {
+            book.setPrice(Double.parseDouble(textFieldPrice.getText()));
+            book.setTitle(textFieldTitle.getText());
+            book.setAuthor(textFieldAuthor.getText());
+            cardPanel.add(createBranchMenuPage(branch), "branchMenuPage");
+            cardLayout.show(cardPanel, "branchMenuPage");
+        });
+
+        panel.add(buttonRowOfOne);
+
+        panel.add(returnToBranchButton(branch));
+        panel.add(placeQuitButton());
+        setVisible(true);
+
+        return panel;
+    }
+
+    private JPanel placeSellRemoveButtons(Branch branch, Book book) {
+        JButton b1 = new JButton("Sell Book");
+        JButton b2 = new JButton("Delete Book");
+
+        JPanel buttonRow = formatButtonRow(b1);
+        buttonRow.add(b2);
+        buttonRow.setSize(300, 0);
+
+        b1.addActionListener(e -> {
+            branch.sellBook(book);
+            cardLayout.show(cardPanel, "menuPage");
+        });
+
+        b2.addActionListener(e -> {
+            branch.removeBook(book);
+            cardLayout.show(cardPanel, "menuPage");
+        });
+
+        return buttonRow;
+    }
+
+    private JPanel placeOnOffButton(Book book) {
+        JRadioButton on = new JRadioButton("On");
+        JRadioButton off = new JRadioButton("Off");
+
+        on.setSelected(book.getReservedStatus());
+        off.setSelected(!book.getReservedStatus());
+
+        ButtonGroup buttons = new ButtonGroup();
+        buttons.add(on);
+        buttons.add(off);
+
+        JPanel onOffButton = new JPanel();
+        onOffButton.add(on);
+        onOffButton.add(off);
+
+        ItemListener itemListener = new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (on.isSelected()) {
+                    book.setReservedStatus(true);
+                } else {
+                    book.setReservedStatus(false);
+                }
+            }
+        };
+
+        on.addItemListener(itemListener);
+        off.addItemListener(itemListener);
+
+        return onOffButton;
+    }
+
+//    private JPanel placeSubmitButton(Book book, Double price, String title, String author) {
+//        JButton b1 = new JButton("Submit");
+//
+//        JPanel buttonRowOfOne = formatButtonRow(b1);
+//        buttonRowOfOne.setSize(50, 0);
+//
+//        b1.addActionListener(e -> {
+//            book.setPrice(price);
+//            book.setTitle(title);
+//            book.setAuthor(author);
+//            cardLayout.show(cardPanel, "menuPage");
+//        });
+//
+//        return buttonRowOfOne;
+//    }
+
+    private JPanel createNewBookPage(Branch branch) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(6, 1));
+        JTextField textField = new JTextField();
+        JTextField textFieldAuthor = new JTextField();
+        JTextField textFieldPrice = new JTextField();
+
+        panel.add(placeHeaderMessage("What is name of book:"));
+        panel.add(textField);
+        panel.add(placeHeaderMessage("Who is author:"));
+        panel.add(textFieldAuthor);
+        panel.add(placeHeaderMessage("How much:"));
+        panel.add(textFieldPrice);
+
+
+        JButton b1 = new JButton("Create");
+
+        JPanel buttonRow = formatButtonRow(b1);
+
+        b1.addActionListener(e -> {
+            branch.addBook(new Book(textField.getText(), textFieldAuthor.getText(),
+                    Double.parseDouble(textFieldPrice.getText())));
+            cardLayout.show(cardPanel, "menuPage");
+        });
+
+        panel.add(buttonRow);
+        panel.add(returnToBranchButton(branch));
+        panel.add(placeQuitButton());
+        setVisible(true);
+
+        return panel;
+    }
+
+    private JPanel returnToBranchButton(Branch branch) {
+        JButton b1 = new JButton("Return to Branch Menu");
+
+        JPanel buttonRow = formatButtonRow(b1);
+
+        b1.addActionListener(e -> {
+            cardPanel.add(createBranchMenuPage(branch), "branchMenuPage");
+            cardLayout.show(cardPanel, "branchMenuPage");
+        });
+
+        return buttonRow;
+    }
+
+    private JPanel createNewBranchPage() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(5, 1));
+        JTextField textField = new JTextField();
+        JTextField textFieldAddress = new JTextField();
+
+        panel.add(placeHeaderMessage("What is name of branch:"));
+        panel.add(textField);
+        panel.add(placeHeaderMessage("What is address:"));
+        panel.add(textFieldAddress);
+
+        JButton b1 = new JButton("Create");
+
+        JPanel buttonRow = formatButtonRow(b1);
+
+        b1.addActionListener(e -> {
+            company.addBranch(new Branch(textField.getText(), textFieldAddress.getText()));
+            cardLayout.show(cardPanel, "menuPage");
+        });
+
+        panel.add(buttonRow);
+        panel.add(placeQuitButton());
+        setVisible(true);
+
+        return panel;
+    }
+
+    private JPanel createCompanyNamePage() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(3, 1));
+        JTextField textField = new JTextField();
+
+        panel.add(placeHeaderMessage("What do you want to name it:"));
+        panel.add(textField);
+
+        JButton b1 = new JButton("Create");
+
+        JPanel buttonRow = formatButtonRow(b1);
+
+        b1.addActionListener(e -> {
+            this.company = new Company(textField.getText());
+            cardLayout.show(cardPanel, "menuPage");
+        });
+
+        panel.add(buttonRow);
+        panel.add(placeQuitButton());
+        setVisible(true);
+
+        return panel;
+    }
+
+    private JPanel createIntroPage() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(3, 1));
+
+        panel.add(placeHeaderMessage("How do you wanna start?"));
+        panel.add(placeStartButtons());
+        panel.add(placeQuitButton());
+        setVisible(true);
+
+        return panel;
+    }
+
+    private JPanel createMenuPage() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(4, 1));
+
+        panel.add(placeHeaderMessage("What you wanna do?"));
+        panel.add(placeFirstOperationButtons());
+        panel.add(placeSecondOperationButtons());
+        panel.add(placeSaveQuitButtons());
+        setVisible(true);
+
+        return panel;
+    }
+
+    private JPanel createBranchMenuPage(Branch branch) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(4, 1));
+
+        panel.add(placeHeaderMessage("What you wanna do?"));
+        panel.add(placeFirstBranchOperationButtons(branch));
+        panel.add(placeSecondBranchOperationButtons(branch));
+        panel.add(placeSaveQuitButtons());
+        setVisible(true);
+
+        return panel;
+    }
+
+    private JPanel placeSecondBranchOperationButtons(Branch branch) {
+        JButton b1 = new JButton("Edit a Book");
+        JButton b2 = new JButton("Return to Menu");
+
+        JPanel buttonRow = formatButtonRow(b1);
+        buttonRow.add(b2);
+        buttonRow.setSize(300, 0);
+
+        b1.addActionListener(e -> {
+            cardPanel.add(createPickBookPage(branch), "pickBookPage");
+            cardLayout.show(cardPanel, "pickBookPage");
+        });
+
+        b2.addActionListener(e -> {
+            cardLayout.show(cardPanel, "menuPage");
+        });
+
+        return buttonRow;
+    }
+
+    private JPanel placeFirstBranchOperationButtons(Branch branch) {
+        JButton b1 = new JButton("New Book");
+        JButton b2 = new JButton("View Inventory");
+        JButton b3 = new JButton("View Sales");
+
+        JPanel buttonRow = formatButtonRow(b1);
+        buttonRow.add(b2);
+        buttonRow.add(b3);
+        buttonRow.setSize(300, 0);
+
+        b1.addActionListener(e -> {
+            cardPanel.add(createNewBookPage(branch), "newBookPage");
+            cardLayout.show(cardPanel, "newBookPage");
+        });
+
+        b2.addActionListener(e -> {
+            ArrayList<String> listToSend = new ArrayList<>();
+
+            for (Book book : branch.getInventory()) {
+                listToSend.add(book.getTitle());
+            }
+
+            cardPanel.add(createViewListPage("Here is the inventory", listToSend, branch), "viewInventoryPage");
+            cardLayout.show(cardPanel, "viewInventoryPage");
+        });
+
+        b3.addActionListener(e -> {
+            ArrayList<String> listToSend = new ArrayList<>();
+
+            for (Book book : branch.getBooksSold()) {
+                listToSend.add(book.getTitle());
+            }
+
+            cardPanel.add(createViewListPage("Here is the sales", listToSend, branch), "viewSalesPage");
+            cardLayout.show(cardPanel, "viewSalesPage");
+        });
+
+        return buttonRow;
+    }
+
+
+    private JPanel createPickBookPage(Branch branch) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(4, 1));
+        JTextArea textArea = new JTextArea();
+
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        textArea.setEditable(false);
+
+        String result = "";
+
+        for (int i=0; i < branch.getInventory().size() ; i++) {
+            result = result + "\n" + i + branch.getInventory().get(i).getTitle();
+        }
+
+        textArea.setText(result);
+        panel.add(textArea);
+        panel.add(placeHeaderMessage("Enter the number of book:"));
+        JTextField textField = new JTextField();
+        panel.add(textField);
+
+        panel.add(placeBookEnterButton(textField, branch));
+        panel.add(returnToBranchButton(branch));
+        panel.add(placeQuitButton());
+        setVisible(true);
+
+        return panel;
+    }
+
+    private JPanel placeBookEnterButton(JTextField textField, Branch branch) {
+        JButton b1 = new JButton("Enter");
+
+        b1.addActionListener(e -> {
+            cardPanel.add(editBookPage(branch, branch.getInventory().get(textField.getX())), "editBookPage");
+            cardLayout.show(cardPanel, "editBookPage");
+        });
+
+        JPanel buttonRowOfOne = formatButtonRow(b1);
+        return buttonRowOfOne;
+    }
+
+
+    private JPanel createPickBranchPage() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(4, 1));
+        JTextArea textArea = new JTextArea();
+
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        textArea.setEditable(false);
+
+        String result = "";
+
+        for (int i=0; i < company.getBranches().size() ; i++) {
+            result = result + "\n" + i + this.company.getBranches().get(i).getName();
+        }
+
+        textArea.setText(result);
+        panel.add(textArea);
+        panel.add(placeHeaderMessage("Enter the number of branch:"));
+        JTextField textField = new JTextField();
+        panel.add(textField);
+
+        panel.add(placeBranchEnterButton(textField));
+        panel.add(placeMenuButton());
+        panel.add(placeQuitButton());
+        setVisible(true);
+
+        return panel;
+    }
+
+    private JPanel placeBranchEnterButton(JTextField textField) {
+        JButton b1 = new JButton("Enter");
+
+        b1.addActionListener(e -> {
+            cardPanel.add(createBranchMenuPage(company.getBranches().get(textField.getX())), "branchMenuPage");
+            cardLayout.show(cardPanel, "branchMenuPage");
+        });
+
+        JPanel buttonRowOfOne = formatButtonRow(b1);
+        return buttonRowOfOne;
+    }
+
+    private JPanel placeQuitButton() {
+        JButton b1 = new JButton("Quit");
+
+        b1.addActionListener(e -> {
+            System.exit(0);
+        });
+
+        JPanel buttonRowOfOne = formatButtonRow(b1);
+        buttonRowOfOne.setSize(50, 0);
+
+        return buttonRowOfOne;
+    }
+
+    private JPanel placeStartButtons() {
+        JButton b1 = new JButton("Start from Scratch");
+        JButton b2 = new JButton("Load from File");
+
+        JPanel buttonRow = formatButtonRow(b1);
+        buttonRow.add(b2);
+        buttonRow.setSize(100, 0);
+
+        b1.addActionListener(e -> {
+            cardPanel.add(createCompanyNamePage(), "nameCompanyPage");
+            cardLayout.show(cardPanel, "nameCompanyPage");
+        });
+
+        b2.addActionListener(e -> {
+            cardLayout.show(cardPanel, "menuPage");
+            loadCompany();
+        });
+
+        return buttonRow;
+    }
+
+    private JPanel placeFirstOperationButtons() {
+        JButton b1 = new JButton("Open Branch");
+        JButton b2 = new JButton("View Branches");
+
+        JPanel buttonRow = formatButtonRow(b1);
+        buttonRow.add(b2);
+        buttonRow.setSize(300, 0);
+
+        b1.addActionListener(e -> {
+            cardPanel.add(createNewBranchPage(), "newBranchPage");
+            cardLayout.show(cardPanel, "newBranchPage");
+        });
+
+        b2.addActionListener(e -> {
+            ArrayList<String> listToSend = new ArrayList<>();
+
+            for (Branch branch : company.getBranches()) {
+                listToSend.add(branch.getName());
+            }
+
+            cardPanel.add(createViewListPage("Here is all the branches", listToSend, null), "viewBranchesPage");
+            cardLayout.show(cardPanel, "viewBranchesPage");
+        });
+
+        return buttonRow;
+    }
+
+    private JPanel placeSecondOperationButtons() {
+        JButton b1 = new JButton("View Inventory");
+        JButton b2 = new JButton("View Sales");
+        JButton b3 = new JButton("Edit a Branch");
+
+        JPanel buttonRow = formatButtonRow(b1);
+        buttonRow.add(b2);
+        buttonRow.add(b3);
+        buttonRow.setSize(300, 0);
+
+        b1.addActionListener(e -> {
+            ArrayList<String> listToSend = new ArrayList<>();
+
+            for (Book book : company.getInventory()) {
+                listToSend.add(book.getTitle());
+            }
+
+            cardPanel.add(createViewListPage("Here is the inventory", listToSend, null), "viewInventoryPage");
+            cardLayout.show(cardPanel, "viewInventoryPage");
+        });
+
+        b2.addActionListener(e -> {
+            ArrayList<String> listToSend = new ArrayList<>();
+
+            for (Book book : company.getBooksSold()) {
+                listToSend.add(book.getTitle());
+            }
+
+            cardPanel.add(createViewListPage("Here is the sales", listToSend, null), "viewSalesPage");
+            cardLayout.show(cardPanel, "viewSalesPage");
+        });
+
+        b3.addActionListener(e -> {
+            cardPanel.add(createPickBranchPage(), "pickBranchPage");
+            cardLayout.show(cardPanel, "pickBranchPage");
+        });
+
+        return buttonRow;
+    }
+
+    private JPanel placeSaveQuitButtons() {
+        JButton b1 = new JButton("Save");
+        JButton b2 = new JButton("Quit");
+
+        JPanel buttonRow = formatButtonRow(b1);
+        buttonRow.add(b2);
+        buttonRow.setSize(300, 0);
+
+        b1.addActionListener(e -> {
+            saveCompany();
+        });
+
+        b2.addActionListener(e -> {
+            System.exit(0);
+        });
+
+        return buttonRow;
+    }
+
+    private JPanel formatButtonRow(JButton b) {
+        JPanel p = new JPanel();
+        p.setLayout(new FlowLayout());
+        p.add(b);
+
+        return p;
+    }
+
+    private JLabel placeHeaderMessage(String msg) {
+        JLabel greeting = new JLabel(msg, JLabel.CENTER);
+        greeting.setSize(WIDTH, HEIGHT / 3);
+        return greeting;
     }
 
     // MODIFIES: this
