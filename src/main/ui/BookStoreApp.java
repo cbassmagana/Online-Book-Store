@@ -9,6 +9,7 @@ import persistence.JsonWriter;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
+import javax.swing.border.EmptyBorder;
 import java.awt.event.ItemListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 // Interface application for a book store company
 public class BookStoreApp extends JFrame {
     private static final String JSON_STORE = "./data/company.json";
+    private static final String STAR_IMG = "./data/star.png";
     private Company company;
     private Scanner input;
     private JsonWriter jsonWriter;
@@ -71,29 +73,42 @@ public class BookStoreApp extends JFrame {
         setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-
+        setResizable(false);
+        ((JPanel) getContentPane()).setBorder(new EmptyBorder(20, 40, 20, 40));
         setVisible(true);
     }
 
-    private JPanel createViewListPage(String message, ArrayList list, Branch branch) {
-
+    private JPanel createViewListPage(String message, ArrayList<String> list, Branch branch) {
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(4, 1));
-        JTextArea textArea = new JTextArea();
+        panel.setLayout(new FlowLayout());
 
+        JTextArea textArea = new JTextArea();
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
         textArea.setEditable(false);
 
         String result = "";
-        for (int i=0; i < list.size(); i++) {
-            result = result + "\n" + list.get(i);
+        for (int i = 0; i < list.size(); i++) {
+            if (result.isEmpty()) {
+                result = "-  " + list.get(i);
+            } else {
+                result = result + "\n" + "-  " + list.get(i);
+            }
         }
 
         textArea.setText(result);
 
-        panel.add(placeHeaderMessage(message));
-        panel.add(textArea);
+        // Wrap the JTextArea in a JScrollPane
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(500, 150));
+        scrollPane.setBorder(new EmptyBorder(8, 10, 10, 10));
+
+        panel.add(formatStringRow(message, 30, 10, 30, 10));
+        panel.add(scrollPane);  // Use the JScrollPane instead of the JTextArea directly
+
+        JPanel placeholderPanel = new JPanel();
+        placeholderPanel.setPreferredSize(new Dimension(400, 15)); // Adjust the height as needed
+        panel.add(placeholderPanel);
 
         if (branch == null) {
             panel.add(placeMenuButton());
@@ -109,7 +124,7 @@ public class BookStoreApp extends JFrame {
     private JPanel placeMenuButton() {
         JButton b1 = new JButton("Return to Menu");
 
-        JPanel buttonRow = formatButtonRow(b1);
+        JPanel buttonRow = formatButtonRow(b1, 10, 10, 10, 10);
         buttonRow.setSize(300, 0);
 
         b1.addActionListener(e -> {
@@ -121,13 +136,18 @@ public class BookStoreApp extends JFrame {
 
     private JPanel editBookPage(Branch branch, Book book) {
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(15, 1));
+        panel.setLayout(new GridLayout(7, 2, 0, 10));
         JTextField textFieldTitle = new JTextField();
         textFieldTitle.setText(book.getTitle());
+        textFieldTitle.setBorder(new EmptyBorder(0,10,0,0));
+
         JTextField textFieldAuthor = new JTextField();
         textFieldAuthor.setText(book.getAuthor());
+        textFieldAuthor.setBorder(new EmptyBorder(0,10,0,0));
+
         JTextField textFieldPrice = new JTextField();
         textFieldPrice.setText(String.valueOf(book.getPrice()));
+        textFieldPrice.setBorder(new EmptyBorder(0,10,0,0));
 
         panel.add(placeHeaderMessage("Name of book:"));
         panel.add(textFieldTitle);
@@ -137,16 +157,15 @@ public class BookStoreApp extends JFrame {
         panel.add(textFieldPrice);
         panel.add(placeHeaderMessage("Reservation status:"));
         panel.add(placeOnOffButton(book));
+        panel.add(formatStringRow("Average Rating of Book: " + book.getAverageRating() + " stars.", 0, 0, 0, 0));
+        panel.add(placeRateBookButton(book, branch));
 
         panel.add(placeSellRemoveButtons(branch, book));
 
 
-//        panel.add(placeSubmitButton(book, Double.parseDouble(textFieldPrice.getText()), textFieldTitle.getText(),
-//                textFieldAuthor.getText()));
+        JButton b1 = new JButton("Save Edits");
 
-        JButton b1 = new JButton("Save Changes");
-
-        JPanel buttonRowOfOne = formatButtonRow(b1);
+        JPanel buttonRowOfOne = formatButtonRow(b1, 10, 10, 10, 10);
 
         b1.addActionListener(e -> {
             book.setPrice(Double.parseDouble(textFieldPrice.getText()));
@@ -165,22 +184,122 @@ public class BookStoreApp extends JFrame {
         return panel;
     }
 
+    private JPanel placeRateBookButton(Book book, Branch branch) {
+        JButton b1 = new JButton("Submit New Rating");
+
+        JPanel buttonRow = formatButtonRow(b1, 0, 0, 0, 0);
+
+        b1.addActionListener(e -> {
+            cardPanel.add(createRateBookPage(book, branch), "rateBookPage");
+            cardLayout.show(cardPanel, "rateBookPage");
+        });
+
+        return buttonRow;
+    }
+
+    private JPanel createRateBookPage(Book book, Branch branch) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(3, 1, 0, 40));
+        panel.setBorder(new EmptyBorder(20, 0, 0, 0));
+
+        panel.add(formatStringRow("Submit a rating for " + book.getTitle() + " by clicking on the corresponding star!", 0,0,0,0));
+        panel.add(placeStars(book, branch));
+        panel.add(returnToBookButton(book, branch));
+
+        setVisible(true);
+
+        return panel;
+    }
+
+    private JPanel placeStars(Book book, Branch branch) {
+        ImageIcon starIcon = new ImageIcon(STAR_IMG);
+
+        int newWidth = 40;
+        int newHeight = 40;
+        ImageIcon resizedStarIcon = new ImageIcon(starIcon.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH));
+
+
+        JButton starButton1 = new JButton(resizedStarIcon);
+        JButton starButton2 = new JButton(resizedStarIcon);
+        JButton starButton3 = new JButton(resizedStarIcon);
+        JButton starButton4 = new JButton(resizedStarIcon);
+        JButton starButton5 = new JButton(resizedStarIcon);
+
+        JPanel buttonRow = formatButtonRow(starButton1, 0, 0, 0, 0);
+        buttonRow.add(starButton2);
+        buttonRow.add(starButton3);
+        buttonRow.add(starButton4);
+        buttonRow.add(starButton5);
+
+        starButton1.addActionListener(e -> {
+            book.rateBook(1);
+            JOptionPane.showMessageDialog(this, "Your 1 star rating was submitted!", "Rate", JOptionPane.INFORMATION_MESSAGE);
+            cardPanel.add(editBookPage(branch, book), "editBookPage");
+            cardLayout.show(cardPanel, "editBookPage");
+        });
+
+        starButton2.addActionListener(e -> {
+            book.rateBook(2);
+            JOptionPane.showMessageDialog(this, "Your 2 star rating was submitted!", "Rate", JOptionPane.INFORMATION_MESSAGE);
+            cardPanel.add(editBookPage(branch, book), "editBookPage");
+            cardLayout.show(cardPanel, "editBookPage");
+        });
+
+        starButton3.addActionListener(e -> {
+            book.rateBook(3);
+            JOptionPane.showMessageDialog(this, "Your 3 star rating was submitted!", "Rate", JOptionPane.INFORMATION_MESSAGE);
+            cardPanel.add(editBookPage(branch, book), "editBookPage");
+            cardLayout.show(cardPanel, "editBookPage");
+        });
+
+        starButton4.addActionListener(e -> {
+            book.rateBook(4);
+            JOptionPane.showMessageDialog(this, "Your 4 star rating was submitted!", "Rate", JOptionPane.INFORMATION_MESSAGE);
+            cardPanel.add(editBookPage(branch, book), "editBookPage");
+            cardLayout.show(cardPanel, "editBookPage");
+        });
+
+        starButton5.addActionListener(e -> {
+            book.rateBook(5);
+            JOptionPane.showMessageDialog(this, "Your 5 star rating was submitted!", "Rate", JOptionPane.INFORMATION_MESSAGE);
+            cardPanel.add(editBookPage(branch, book), "editBookPage");
+            cardLayout.show(cardPanel, "editBookPage");
+        });
+
+        return buttonRow;
+    }
+
+    private JPanel returnToBookButton(Book book, Branch branch) {
+        JButton b1 = new JButton("Return to Edit Book");
+
+        JPanel buttonRow = formatButtonRow(b1, 0, 10, 10, 10);
+
+        b1.addActionListener(e -> {
+            cardPanel.add(editBookPage(branch, book), "editBookPage");
+            cardLayout.show(cardPanel, "editBookPage");
+        });
+
+        return buttonRow;
+    }
+
     private JPanel placeSellRemoveButtons(Branch branch, Book book) {
         JButton b1 = new JButton("Sell Book");
         JButton b2 = new JButton("Delete Book");
 
-        JPanel buttonRow = formatButtonRow(b1);
+        JPanel buttonRow = formatButtonRow(b1, 10, 10, 10, 10);
         buttonRow.add(b2);
         buttonRow.setSize(300, 0);
 
         b1.addActionListener(e -> {
             branch.sellBook(book);
-            cardLayout.show(cardPanel, "menuPage");
+            cardPanel.add(createBranchMenuPage(branch), "branchMenuPage");
+            cardLayout.show(cardPanel, "branchMenuPage");
         });
 
         b2.addActionListener(e -> {
             branch.removeBook(book);
-            cardLayout.show(cardPanel, "menuPage");
+            cardPanel.add(createBranchMenuPage(branch), "branchMenuPage");
+            cardLayout.show(cardPanel, "branchMenuPage");
         });
 
         return buttonRow;
@@ -198,6 +317,9 @@ public class BookStoreApp extends JFrame {
         buttons.add(off);
 
         JPanel onOffButton = new JPanel();
+        onOffButton.setLayout(new FlowLayout());
+        onOffButton.setBorder(BorderFactory.createEmptyBorder(5, 0,0,0));
+
         onOffButton.add(on);
         onOffButton.add(off);
 
@@ -236,32 +358,48 @@ public class BookStoreApp extends JFrame {
 
     private JPanel createNewBookPage(Branch branch) {
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(6, 1));
-        JTextField textField = new JTextField();
-        JTextField textFieldAuthor = new JTextField();
-        JTextField textFieldPrice = new JTextField();
+        panel.setLayout(new FlowLayout());
 
-        panel.add(placeHeaderMessage("What is name of book:"));
+        JPanel placeholderPanel = new JPanel();
+        placeholderPanel.setPreferredSize(new Dimension(500, 6)); // Adjust the height as needed
+
+        JTextField textField = new JTextField();
+        textField.setPreferredSize(new Dimension(450, 50));
+        textField.setBorder(new EmptyBorder(5,10,0,0));
+
+        JTextField textFieldAuthor = new JTextField();
+        textFieldAuthor.setPreferredSize(new Dimension(450, 50));
+        textFieldAuthor.setBorder(new EmptyBorder(5,10,0,0));
+
+        JTextField textFieldPrice = new JTextField();
+        textFieldPrice.setPreferredSize(new Dimension(450, 50));
+        textFieldPrice.setBorder(new EmptyBorder(5,10,0,0));
+
+        panel.add(formatStringRow("Enter the title of this new book:", 0, 0, 0, 0));
         panel.add(textField);
-        panel.add(placeHeaderMessage("Who is author:"));
+        panel.add(formatStringRow("Enter the author's name:", 12, 0, 0, 0));
         panel.add(textFieldAuthor);
-        panel.add(placeHeaderMessage("How much:"));
+        panel.add(formatStringRow("Enter the price of the book in dollars:", 12, 0, 0, 0));
         panel.add(textFieldPrice);
+        panel.add(placeholderPanel);
 
 
         JButton b1 = new JButton("Create");
 
-        JPanel buttonRow = formatButtonRow(b1);
+        JPanel buttonRow = formatButtonRow(b1, 10, 10, 10, 10);
 
         b1.addActionListener(e -> {
             branch.addBook(new Book(textField.getText(), textFieldAuthor.getText(),
                     Double.parseDouble(textFieldPrice.getText())));
-            cardLayout.show(cardPanel, "menuPage");
+            cardPanel.add(createBranchMenuPage(branch), "branchMenuPage");
+            cardLayout.show(cardPanel, "branchMenuPage");
         });
 
-        panel.add(buttonRow);
-        panel.add(returnToBranchButton(branch));
+
+
         panel.add(placeQuitButton());
+        panel.add(returnToBranchButton(branch));
+        panel.add(buttonRow);
         setVisible(true);
 
         return panel;
@@ -270,7 +408,7 @@ public class BookStoreApp extends JFrame {
     private JPanel returnToBranchButton(Branch branch) {
         JButton b1 = new JButton("Return to Branch Menu");
 
-        JPanel buttonRow = formatButtonRow(b1);
+        JPanel buttonRow = formatButtonRow(b1, 10, 10, 10, 10);
 
         b1.addActionListener(e -> {
             cardPanel.add(createBranchMenuPage(branch), "branchMenuPage");
@@ -282,26 +420,29 @@ public class BookStoreApp extends JFrame {
 
     private JPanel createNewBranchPage() {
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(5, 1));
+        panel.setLayout(new GridLayout(3, 2, 20, 40));
+        panel.setBorder(new EmptyBorder(20, 0, 0, 0));
         JTextField textField = new JTextField();
+        textField.setBorder(new EmptyBorder(0, 10, 0, 0));
         JTextField textFieldAddress = new JTextField();
+        textFieldAddress.setBorder(new EmptyBorder(0, 10, 0, 0));
 
-        panel.add(placeHeaderMessage("What is name of branch:"));
+        panel.add(formatStringRow("Enter the name of the new branch:", 20, 10, 20, 10));
         panel.add(textField);
-        panel.add(placeHeaderMessage("What is address:"));
+        panel.add(formatStringRow("Enter the address of this branch:", 20, 10, 20, 10));
         panel.add(textFieldAddress);
 
         JButton b1 = new JButton("Create");
 
-        JPanel buttonRow = formatButtonRow(b1);
+        JPanel buttonRow = formatButtonRow(b1, 10, 10, 10, 10);
 
         b1.addActionListener(e -> {
             company.addBranch(new Branch(textField.getText(), textFieldAddress.getText()));
             cardLayout.show(cardPanel, "menuPage");
         });
 
+        panel.add(placeMenuButton());
         panel.add(buttonRow);
-        panel.add(placeQuitButton());
         setVisible(true);
 
         return panel;
@@ -310,14 +451,16 @@ public class BookStoreApp extends JFrame {
     private JPanel createCompanyNamePage() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(3, 1));
-        JTextField textField = new JTextField();
+        JTextField textField = new JTextField(1);
+        textField.setBorder(new EmptyBorder(0, 20, 0, 0));
 
-        panel.add(placeHeaderMessage("What do you want to name it:"));
+        panel.add(formatStringRow("Enter the name of your book store company:", 10, 10, 20, 10));
         panel.add(textField);
 
         JButton b1 = new JButton("Create");
 
-        JPanel buttonRow = formatButtonRow(b1);
+        JPanel buttonRow = formatButtonRow(b1, 25, 10, 0, 10);
+        buttonRow.add(placeQuitButton());
 
         b1.addActionListener(e -> {
             this.company = new Company(textField.getText());
@@ -325,7 +468,6 @@ public class BookStoreApp extends JFrame {
         });
 
         panel.add(buttonRow);
-        panel.add(placeQuitButton());
         setVisible(true);
 
         return panel;
@@ -333,9 +475,10 @@ public class BookStoreApp extends JFrame {
 
     private JPanel createIntroPage() {
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(3, 1));
+        panel.setLayout(new GridLayout(4, 1));
 
-        panel.add(placeHeaderMessage("How do you wanna start?"));
+        panel.add(formatStringRow("Welcome to MyBookStoreManager!", 20, 10, 10, 10));
+        panel.add(formatStringRow("How would you like to initialize your company?", 10, 10, 20, 10));
         panel.add(placeStartButtons());
         panel.add(placeQuitButton());
         setVisible(true);
@@ -347,7 +490,7 @@ public class BookStoreApp extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(4, 1));
 
-        panel.add(placeHeaderMessage("What you wanna do?"));
+        panel.add(formatStringRow("Select the task that you would like to accomplish.", 10, 10, 10, 10));
         panel.add(placeFirstOperationButtons());
         panel.add(placeSecondOperationButtons());
         panel.add(placeSaveQuitButtons());
@@ -360,7 +503,7 @@ public class BookStoreApp extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(4, 1));
 
-        panel.add(placeHeaderMessage("What you wanna do?"));
+        panel.add(formatStringRow("Select the task that you would like to accomplish at " + branch.getName() + ".", 0, 0, 0, 0));
         panel.add(placeFirstBranchOperationButtons(branch));
         panel.add(placeSecondBranchOperationButtons(branch));
         panel.add(placeSaveQuitButtons());
@@ -373,7 +516,7 @@ public class BookStoreApp extends JFrame {
         JButton b1 = new JButton("Edit a Book");
         JButton b2 = new JButton("Return to Menu");
 
-        JPanel buttonRow = formatButtonRow(b1);
+        JPanel buttonRow = formatButtonRow(b1, 10, 10, 10, 10);
         buttonRow.add(b2);
         buttonRow.setSize(300, 0);
 
@@ -390,11 +533,11 @@ public class BookStoreApp extends JFrame {
     }
 
     private JPanel placeFirstBranchOperationButtons(Branch branch) {
-        JButton b1 = new JButton("New Book");
+        JButton b1 = new JButton("Add New Book");
         JButton b2 = new JButton("View Inventory");
         JButton b3 = new JButton("View Sales");
 
-        JPanel buttonRow = formatButtonRow(b1);
+        JPanel buttonRow = formatButtonRow(b1, 10, 10, 10, 10);
         buttonRow.add(b2);
         buttonRow.add(b3);
         buttonRow.setSize(300, 0);
@@ -411,7 +554,7 @@ public class BookStoreApp extends JFrame {
                 listToSend.add(book.getTitle());
             }
 
-            cardPanel.add(createViewListPage("Here is the inventory", listToSend, branch), "viewInventoryPage");
+            cardPanel.add(createViewListPage("Here is the entire inventory at " + branch.getName() + ", valued at a total of: $" + branch.getInventoryValue() + ".", listToSend, branch), "viewInventoryPage");
             cardLayout.show(cardPanel, "viewInventoryPage");
         });
 
@@ -422,7 +565,7 @@ public class BookStoreApp extends JFrame {
                 listToSend.add(book.getTitle());
             }
 
-            cardPanel.add(createViewListPage("Here is the sales", listToSend, branch), "viewSalesPage");
+            cardPanel.add(createViewListPage("Here are all of previous sales at " + branch.getName() + ", for a total revenue of: $" + branch.getCashValue() + ".", listToSend, branch), "viewSalesPage");
             cardLayout.show(cardPanel, "viewSalesPage");
         });
 
@@ -432,7 +575,8 @@ public class BookStoreApp extends JFrame {
 
     private JPanel createPickBookPage(Branch branch) {
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(4, 1));
+        panel.setBorder(new EmptyBorder(15, 0, 0, 0));
+        panel.setLayout(new FlowLayout());
         JTextArea textArea = new JTextArea();
 
         textArea.setLineWrap(true);
@@ -440,20 +584,31 @@ public class BookStoreApp extends JFrame {
         textArea.setEditable(false);
 
         String result = "";
-
-        for (int i=0; i < branch.getInventory().size() ; i++) {
-            result = result + "\n" + i + branch.getInventory().get(i).getTitle();
+        for (int i=0; i < branch.getInventory().size(); i++) {
+            if (result == "") {
+                result = i + "  -  " + branch.getInventory().get(i).getTitle();
+            } else {
+                result = result + "\n" + i + "  -  " + branch.getInventory().get(i).getTitle();
+            }
         }
 
         textArea.setText(result);
-        panel.add(textArea);
-        panel.add(placeHeaderMessage("Enter the number of book:"));
+
+
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(500, 150));
+        scrollPane.setBorder(new EmptyBorder(8, 10, 10, 10));
+
+        panel.add(scrollPane);
+        panel.add(formatStringRow("Enter the number corresponding to the book you want to select:", 20, 10, 20, 4));
         JTextField textField = new JTextField();
+        textField.setPreferredSize(new Dimension(60, 40));
+        textField.setBorder(new EmptyBorder(0,10,0,0));
         panel.add(textField);
 
-        panel.add(placeBookEnterButton(textField, branch));
-        panel.add(returnToBranchButton(branch));
         panel.add(placeQuitButton());
+        panel.add(returnToBranchButton(branch));
+        panel.add(placeBookEnterButton(textField, branch));
         setVisible(true);
 
         return panel;
@@ -463,39 +618,52 @@ public class BookStoreApp extends JFrame {
         JButton b1 = new JButton("Enter");
 
         b1.addActionListener(e -> {
-            cardPanel.add(editBookPage(branch, branch.getInventory().get(textField.getX())), "editBookPage");
+            cardPanel.add(editBookPage(branch, branch.getInventory().get(Integer.parseInt(textField.getText()))), "editBookPage");
             cardLayout.show(cardPanel, "editBookPage");
         });
 
-        JPanel buttonRowOfOne = formatButtonRow(b1);
+        JPanel buttonRowOfOne = formatButtonRow(b1, 10, 10, 10, 10);
         return buttonRowOfOne;
     }
 
 
     private JPanel createPickBranchPage() {
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(4, 1));
-        JTextArea textArea = new JTextArea();
+        panel.setBorder(new EmptyBorder(15, 0, 0, 0));
+        panel.setLayout(new FlowLayout());
 
+        JTextArea textArea = new JTextArea();
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
         textArea.setEditable(false);
 
         String result = "";
-
-        for (int i=0; i < company.getBranches().size() ; i++) {
-            result = result + "\n" + i + this.company.getBranches().get(i).getName();
+        for (int i = 0; i < company.getBranches().size(); i++) {
+            if (result.isEmpty()) {
+                result = i + "  -  " + this.company.getBranches().get(i).getName();
+            } else {
+                result = result + "\n" + i + "  -  " + this.company.getBranches().get(i).getName();
+            }
         }
 
         textArea.setText(result);
-        panel.add(textArea);
-        panel.add(placeHeaderMessage("Enter the number of branch:"));
-        JTextField textField = new JTextField();
-        panel.add(textField);
 
-        panel.add(placeBranchEnterButton(textField));
-        panel.add(placeMenuButton());
+        // Wrap the JTextArea in a JScrollPane
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(500, 150));
+        scrollPane.setBorder(new EmptyBorder(8, 10, 10, 10));
+
+        panel.add(scrollPane);
+        panel.add(formatStringRow("Enter the number corresponding to the branch you want to select:", 20, 10, 20, 4));
+
+        JTextField textField = new JTextField();
+        textField.setPreferredSize(new Dimension(60, 40));
+        textField.setBorder(new EmptyBorder(0, 10, 0, 0));
+
+        panel.add(textField);
         panel.add(placeQuitButton());
+        panel.add(placeMenuButton());
+        panel.add(placeBranchEnterButton(textField));
         setVisible(true);
 
         return panel;
@@ -505,11 +673,11 @@ public class BookStoreApp extends JFrame {
         JButton b1 = new JButton("Enter");
 
         b1.addActionListener(e -> {
-            cardPanel.add(createBranchMenuPage(company.getBranches().get(textField.getX())), "branchMenuPage");
+            cardPanel.add(createBranchMenuPage(company.getBranches().get(Integer.parseInt(textField.getText()))), "branchMenuPage");
             cardLayout.show(cardPanel, "branchMenuPage");
         });
 
-        JPanel buttonRowOfOne = formatButtonRow(b1);
+        JPanel buttonRowOfOne = formatButtonRow(b1, 10, 10, 10, 10);
         return buttonRowOfOne;
     }
 
@@ -520,7 +688,7 @@ public class BookStoreApp extends JFrame {
             System.exit(0);
         });
 
-        JPanel buttonRowOfOne = formatButtonRow(b1);
+        JPanel buttonRowOfOne = formatButtonRow(b1, 10, 10, 10, 10);
         buttonRowOfOne.setSize(50, 0);
 
         return buttonRowOfOne;
@@ -530,7 +698,7 @@ public class BookStoreApp extends JFrame {
         JButton b1 = new JButton("Start from Scratch");
         JButton b2 = new JButton("Load from File");
 
-        JPanel buttonRow = formatButtonRow(b1);
+        JPanel buttonRow = formatButtonRow(b1, 10, 10, 10, 10);
         buttonRow.add(b2);
         buttonRow.setSize(100, 0);
 
@@ -548,10 +716,10 @@ public class BookStoreApp extends JFrame {
     }
 
     private JPanel placeFirstOperationButtons() {
-        JButton b1 = new JButton("Open Branch");
+        JButton b1 = new JButton("Open New Branch");
         JButton b2 = new JButton("View Branches");
 
-        JPanel buttonRow = formatButtonRow(b1);
+        JPanel buttonRow = formatButtonRow(b1, 10, 10, 10, 10);
         buttonRow.add(b2);
         buttonRow.setSize(300, 0);
 
@@ -567,7 +735,7 @@ public class BookStoreApp extends JFrame {
                 listToSend.add(branch.getName());
             }
 
-            cardPanel.add(createViewListPage("Here is all the branches", listToSend, null), "viewBranchesPage");
+            cardPanel.add(createViewListPage("Here is the list of all the company's branches:", listToSend, null), "viewBranchesPage");
             cardLayout.show(cardPanel, "viewBranchesPage");
         });
 
@@ -579,7 +747,7 @@ public class BookStoreApp extends JFrame {
         JButton b2 = new JButton("View Sales");
         JButton b3 = new JButton("Edit a Branch");
 
-        JPanel buttonRow = formatButtonRow(b1);
+        JPanel buttonRow = formatButtonRow(b1, 10, 10, 10, 10);
         buttonRow.add(b2);
         buttonRow.add(b3);
         buttonRow.setSize(300, 0);
@@ -591,7 +759,7 @@ public class BookStoreApp extends JFrame {
                 listToSend.add(book.getTitle());
             }
 
-            cardPanel.add(createViewListPage("Here is the inventory", listToSend, null), "viewInventoryPage");
+            cardPanel.add(createViewListPage("Here is the company's entire inventory, valued at a total of: $" + company.getInventoryValue() + ".", listToSend, null), "viewInventoryPage");
             cardLayout.show(cardPanel, "viewInventoryPage");
         });
 
@@ -602,7 +770,7 @@ public class BookStoreApp extends JFrame {
                 listToSend.add(book.getTitle());
             }
 
-            cardPanel.add(createViewListPage("Here is the sales", listToSend, null), "viewSalesPage");
+            cardPanel.add(createViewListPage("Here is all of company's previous sales, for a total revenue of: $" + company.getCashValue() + ".", listToSend, null), "viewSalesPage");
             cardLayout.show(cardPanel, "viewSalesPage");
         });
 
@@ -618,12 +786,13 @@ public class BookStoreApp extends JFrame {
         JButton b1 = new JButton("Save");
         JButton b2 = new JButton("Quit");
 
-        JPanel buttonRow = formatButtonRow(b1);
+        JPanel buttonRow = formatButtonRow(b1, 10, 10, 10, 10);
         buttonRow.add(b2);
         buttonRow.setSize(300, 0);
 
         b1.addActionListener(e -> {
             saveCompany();
+            JOptionPane.showMessageDialog(this, "Your progress has been saved!", "Saved", JOptionPane.INFORMATION_MESSAGE);
         });
 
         b2.addActionListener(e -> {
@@ -633,17 +802,28 @@ public class BookStoreApp extends JFrame {
         return buttonRow;
     }
 
-    private JPanel formatButtonRow(JButton b) {
+    private JPanel formatButtonRow(JButton b, int top, int left, int bottom, int right) {
         JPanel p = new JPanel();
         p.setLayout(new FlowLayout());
+        p.setBorder(BorderFactory.createEmptyBorder(top, left, bottom, right));
         p.add(b);
 
         return p;
     }
 
+    private JPanel formatStringRow(String labelText, int top, int left, int bottom, int right) {
+        JPanel rowPanel = new JPanel(new BorderLayout());
+        rowPanel.setBorder(BorderFactory.createEmptyBorder(top, left, bottom, right));
+
+        JLabel label = new JLabel(labelText, JLabel.CENTER);
+        rowPanel.add(label, BorderLayout.CENTER);
+
+        return rowPanel;
+    }
+
     private JLabel placeHeaderMessage(String msg) {
         JLabel greeting = new JLabel(msg, JLabel.CENTER);
-        greeting.setSize(WIDTH, HEIGHT / 3);
+        greeting.setSize(WIDTH, 0);
         return greeting;
     }
 

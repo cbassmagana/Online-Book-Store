@@ -38,6 +38,11 @@ public class Book implements Writable {
     public double getAverageRating() {
         double sumOfRatings = 0;
         double numberOfRatings = 0;
+
+        if (this.ratings.size() == 0) {
+            return 0.0;
+        }
+
         for (int r: this.ratings) {
             sumOfRatings += r;
             numberOfRatings += 1;

@@ -1,62 +1,223 @@
 {
-    "name": "Bookmania",
+    "name": "BookWorld",
     "branches": [
         {
-            "address": "123",
-            "name": "Vancouver",
-            "inventory": [{
-                "reserved": true,
-                "author": "rickkk",
-                "price": 17.88,
-                "ratings": [],
-                "title": "percyyy"
-            }],
+            "address": "123 Granville St",
+            "name": "Vancouver Books",
+            "inventory": [
+                {
+                    "reserved": false,
+                    "author": "JR Tolkien",
+                    "price": 19.99,
+                    "ratings": [5],
+                    "title": "Lord of the Rings"
+                },
+                {
+                    "reserved": true,
+                    "author": "George Martin",
+                    "price": 17.39,
+                    "ratings": [5],
+                    "title": "Game of Thrones"
+                }
+            ],
             "sales": [{
                 "reserved": false,
-                "author": "jk",
+                "author": "JK Rowling",
                 "price": 12.99,
                 "ratings": [],
-                "title": "HP"
+                "title": "Harry Potter"
             }]
         },
         {
-            "address": "456",
-            "name": "Surrey",
-            "inventory": [{
-                "reserved": true,
-                "author": "tolk",
-                "price": 12.22,
-                "ratings": [],
-                "title": "LOTR"
-            }],
-            "sales": []
-        },
-        {
-            "address": "678",
-            "name": "Richmond",
-            "inventory": [],
+            "address": "145 Helmecken Rd.",
+            "name": "Victoria Books",
+            "inventory": [
+                {
+                    "reserved": false,
+                    "author": "George Orwell",
+                    "price": 7.99,
+                    "ratings": [
+                        5,
+                        4,
+                        4,
+                        4
+                    ],
+                    "title": "1984"
+                },
+                {
+                    "reserved": false,
+                    "author": "Joseph Heller",
+                    "price": 13.99,
+                    "ratings": [3],
+                    "title": "Catch 22"
+                }
+            ],
             "sales": [{
                 "reserved": false,
-                "author": "GM",
-                "price": 12.24,
-                "ratings": [
-                    3,
-                    4
-                ],
-                "title": "GOT"
+                "author": "Miguel De Cervantes",
+                "price": 34.79,
+                "ratings": [],
+                "title": "Don Quixote"
             }]
         },
         {
-            "address": "123 Dogwood St",
-            "name": "Qualicum Books",
+            "address": "987 Craig St.",
+            "name": "Parksville Book Store",
+            "inventory": [{
+                "reserved": false,
+                "author": "Rick Riordan",
+                "price": 12.99,
+                "ratings": [4],
+                "title": "Percy Jackson"
+            }],
+            "sales": [{
+                "reserved": false,
+                "author": "Herman Melville",
+                "price": 19.99,
+                "ratings": [],
+                "title": "Moby Dick"
+            }]
+        },
+        {
+            "address": "123 Cloverdale Rd.",
+            "name": "Surrey Books",
             "inventory": [{
                 "reserved": true,
-                "author": "Waldo?",
-                "price": 12.22,
-                "ratings": [5],
-                "title": "Where's Waldo?"
+                "author": "Fyodor Dotsoesky",
+                "price": 22.99,
+                "ratings": [
+                    5,
+                    4
+                ],
+                "title": "The Brothers Karamazov"
             }],
+            "sales": [{
+                "reserved": false,
+                "author": "Harper Lee",
+                "price": 17.79,
+                "ratings": [],
+                "title": "To Kill a Mockingbird"
+            }]
+        },
+        {
+            "address": "123 Fir st.",
+            "name": "Richmond Reading",
+            "inventory": [{
+                "reserved": false,
+                "author": "Mark Twain",
+                "price": 12.39,
+                "ratings": [3],
+                "title": "The Adventures of HuckleBerry Finn"
+            }],
+            "sales": [{
+                "reserved": false,
+                "author": "Charlotte Bronte",
+                "price": 12.79,
+                "ratings": [],
+                "title": "Jane Eyre"
+            }]
+        },
+        {
+            "address": "456 Douglas St",
+            "name": "Kelowna Books",
+            "inventory": [{
+                "reserved": false,
+                "author": "Charles Dickens",
+                "price": 17.89,
+                "ratings": [
+                    2,
+                    3
+                ],
+                "title": "Great Expectations"
+            }],
+            "sales": [{
+                "reserved": false,
+                "author": "John Steinbeck",
+                "price": 27.99,
+                "ratings": [],
+                "title": "The Grapes of Wrath"
+            }]
+        },
+        {
+            "address": "123 Main St.",
+            "name": "Whistler Books",
+            "inventory": [
+                {
+                    "reserved": false,
+                    "author": "F. Scott Fitzgerald",
+                    "price": 35.99,
+                    "ratings": [3],
+                    "title": "The Great Gatsby"
+                },
+                {
+                    "reserved": false,
+                    "author": "Charlotte Bronte",
+                    "price": 22.49,
+                    "ratings": [],
+                    "title": "Wuthering Heights"
+                }
+            ],
             "sales": []
+        },
+        {
+            "address": "123 Rose st.",
+            "name": "Calgary Book Store",
+            "inventory": [{
+                "reserved": false,
+                "author": "Marcel Proust",
+                "price": 21.89,
+                "ratings": [4],
+                "title": "In Search of Lost Time"
+            }],
+            "sales": [{
+                "reserved": false,
+                "author": "William Shakespear",
+                "price": 33.99,
+                "ratings": [],
+                "title": "Hamlet"
+            }]
+        },
+        {
+            "address": "123 Jinglepot Rd.",
+            "name": "Nanaimo Books",
+            "inventory": [
+                {
+                    "reserved": false,
+                    "author": "Vladimir Nabokov",
+                    "price": 21.99,
+                    "ratings": [],
+                    "title": "Lolita"
+                },
+                {
+                    "reserved": false,
+                    "author": "J.D. Salinger",
+                    "price": 18.89,
+                    "ratings": [1],
+                    "title": "The Catcher in the Rye"
+                }
+            ],
+            "sales": []
+        },
+        {
+            "address": "123 First St.",
+            "name": "Comox Books",
+            "inventory": [],
+            "sales": [
+                {
+                    "reserved": false,
+                    "author": "Homer",
+                    "price": 23.79,
+                    "ratings": [],
+                    "title": "The Iliad"
+                },
+                {
+                    "reserved": false,
+                    "author": "Ralph Ellison",
+                    "price": 26.79,
+                    "ratings": [],
+                    "title": "Invisible Man"
+                }
+            ]
         }
     ]
 }

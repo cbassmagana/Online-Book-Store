@@ -60,7 +60,7 @@ public class Company implements Writable {
         for (Branch br: branches) {
             totalInventoryValue += br.getInventoryValue();
         }
-        return totalInventoryValue;
+        return Math.floor(totalInventoryValue * 100) / 100;
     }
 
     // EFFECTS: returns the value (in dollars) of all the books sold at the company's branches
@@ -70,7 +70,7 @@ public class Company implements Writable {
         for (Branch br: branches) {
             totalCashValue += br.getCashValue();
         }
-        return totalCashValue;
+        return Math.floor(totalCashValue * 100) / 100;
     }
 
     public String getName() {
