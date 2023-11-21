@@ -269,7 +269,7 @@ public class GraphicalBookStoreApp extends JFrame {
         textArea.setEditable(false);
 
         String result = "";
-        for (int i=0; i < branch.getInventory().size(); i++) {
+        for (int i = 0; i < branch.getInventory().size(); i++) {
             if (result == "") {
                 result = i + "  -  " + branch.getInventory().get(i).getTitle();
             } else {
@@ -283,7 +283,8 @@ public class GraphicalBookStoreApp extends JFrame {
         scrollPane.setBorder(new EmptyBorder(8, 10, 10, 10));
 
         pickBookPanel.add(scrollPane);
-        pickBookPanel.add(formatStringRow("Enter the number corresponding to the book you want to select:", 20, 10, 20, 4));
+        pickBookPanel.add(formatStringRow("Enter the number corresponding to the book you want to select:",
+                20, 10, 20, 4));
 
         JTextField textField = new JTextField();
         textField.setPreferredSize(new Dimension(60, 40));
@@ -355,8 +356,8 @@ public class GraphicalBookStoreApp extends JFrame {
         rateBookPanel.setLayout(new GridLayout(3, 1, 0, 40));
         rateBookPanel.setBorder(new EmptyBorder(20, 0, 0, 0));
 
-        rateBookPanel.add(formatStringRow("Submit a rating for " + book.getTitle() +
-                " by clicking on a star below!", 0,0,0,0));
+        rateBookPanel.add(formatStringRow("Submit a rating for " + book.getTitle()
+                + " by clicking on a star below!", 0,0,0,0));
         rateBookPanel.add(placeStarButtons(book, branch));
         rateBookPanel.add(placeReturnToBookButton(book, branch));
         setVisible(true);
@@ -558,8 +559,8 @@ public class GraphicalBookStoreApp extends JFrame {
             for (Book book : branch.getInventory()) {
                 listToSend.add(book.getTitle());
             }
-            cardPanel.add(createViewListPage("Here is the entire inventory at " + branch.getName() +
-                            ", valued at a total of: $" + branch.getInventoryValue() + ".", listToSend, branch),
+            cardPanel.add(createViewListPage("Here is the entire inventory at " + branch.getName()
+                            + ", valued at a total of: $" + branch.getInventoryValue() + ".", listToSend, branch),
                     "viewInventoryPage");
             cardLayout.show(cardPanel, "viewInventoryPage");
         });
@@ -569,8 +570,8 @@ public class GraphicalBookStoreApp extends JFrame {
             for (Book book : branch.getBooksSold()) {
                 listToSend.add(book.getTitle());
             }
-            cardPanel.add(createViewListPage("Here are all of previous sales at " + branch.getName() +
-                            ", for a total revenue of: $" + branch.getCashValue() + ".", listToSend, branch),
+            cardPanel.add(createViewListPage("Here are all of previous sales at " + branch.getName()
+                            + ", for a total revenue of: $" + branch.getCashValue() + ".", listToSend, branch),
                     "viewSalesPage");
             cardLayout.show(cardPanel, "viewSalesPage");
         });
@@ -634,10 +635,10 @@ public class GraphicalBookStoreApp extends JFrame {
     // EFFECTS: creates and returns JPanel with buttons for returning selling and removing a book
     private JPanel placeSellDeleteButtons(Branch branch, Book book) {
         JButton sellBookButton = new JButton("Sell Book");
-        JButton DeleteBookButton = new JButton("Delete Book");
+        JButton deleteBookButton = new JButton("Delete Book");
 
         JPanel buttonRow = formatButtonRow(sellBookButton, 10, 10, 10, 10);
-        buttonRow.add(DeleteBookButton);
+        buttonRow.add(deleteBookButton);
         buttonRow.setSize(300, 0);
 
         sellBookButton.addActionListener(e -> {
@@ -646,7 +647,7 @@ public class GraphicalBookStoreApp extends JFrame {
             cardLayout.show(cardPanel, "branchMenuPage");
         });
 
-        DeleteBookButton.addActionListener(e -> {
+        deleteBookButton.addActionListener(e -> {
             branch.removeBook(book);
             cardPanel.add(createBranchMenuPage(branch), "branchMenuPage");
             cardLayout.show(cardPanel, "branchMenuPage");

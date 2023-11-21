@@ -56,9 +56,13 @@ public class Book implements Writable {
         this.price = Math.floor(price * 100) / 100;
     }
 
-    public void setTitle(String title) {this.title = title;}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-    public void setAuthor(String author) {this.author = author;}
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 
     public void setReservedStatus(boolean status) {
         this.reservedStatus = status;
