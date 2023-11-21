@@ -9,14 +9,20 @@
                     "reserved": false,
                     "author": "JR Tolkien",
                     "price": 19.99,
-                    "ratings": [5],
+                    "ratings": [
+                        5,
+                        3
+                    ],
                     "title": "Lord of the Rings"
                 },
                 {
                     "reserved": true,
                     "author": "George Martin",
                     "price": 17.39,
-                    "ratings": [5],
+                    "ratings": [
+                        5,
+                        4
+                    ],
                     "title": "Game of Thrones"
                 }
             ],
@@ -40,7 +46,8 @@
                         5,
                         4,
                         4,
-                        4
+                        4,
+                        5
                     ],
                     "title": "1984"
                 },
@@ -87,7 +94,8 @@
                 "price": 22.99,
                 "ratings": [
                     5,
-                    4
+                    4,
+                    3
                 ],
                 "title": "The Brothers Karamazov"
             }],

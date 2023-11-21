@@ -1,10 +1,9 @@
 package ui;
 
-import java.io.FileNotFoundException;
-
-// Main method which instantiates a new user interface
+// Main method which instantiates the graphical user interface
 public class Main {
     public static void main(String[] args) {
-        new BookStoreApp();
+        new GraphicalBookStoreApp();
+        // new BookStoreAppConsole();
     }
 }

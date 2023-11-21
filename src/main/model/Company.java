@@ -44,7 +44,6 @@ public class Company implements Writable {
     // EFFECTS: returns a list of all the books sold at any of the company's branches
     public List<Book> getBooksSold() {
         List<Book> totalBooksSold = new ArrayList<>();
-
         for (Branch br: branches) {
             for (Book b : br.getBooksSold()) {
                 totalBooksSold.add(b);
@@ -56,7 +55,6 @@ public class Company implements Writable {
     // EFFECTS: returns the value (in dollars) of all the books in the company's branches
     public double getInventoryValue() {
         double totalInventoryValue = 0;
-
         for (Branch br: branches) {
             totalInventoryValue += br.getInventoryValue();
         }
@@ -66,7 +64,6 @@ public class Company implements Writable {
     // EFFECTS: returns the value (in dollars) of all the books sold at the company's branches
     public double getCashValue() {
         double totalCashValue = 0;
-
         for (Branch br: branches) {
             totalCashValue += br.getCashValue();
         }

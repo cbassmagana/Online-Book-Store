@@ -2,12 +2,9 @@ package model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 // Unit tests for book class
 public class BookTest {
@@ -30,6 +27,7 @@ public class BookTest {
 
     @Test
     public void testRateBook() {
+        assertEquals(0.0, b1.getAverageRating());
         assertEquals(3, b1.rateBook(3));
         assertEquals(2, b1.rateBook(1));
         assertEquals(3, b1.rateBook(5));

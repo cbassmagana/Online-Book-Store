@@ -1,13 +1,9 @@
 package persistence;
 
-import model.Company;
 import model.Branch;
 import model.Book;
-
 import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 // Used in subclasses' tests for JSON to compare JSONObjects to Books and Branches
 public class JsonTest {
