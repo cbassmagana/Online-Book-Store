@@ -64,6 +64,8 @@ public class Book implements Writable {
         this.author = author;
     }
 
+
+
     public void setReservedStatus(boolean status) {
         this.reservedStatus = status;
     }

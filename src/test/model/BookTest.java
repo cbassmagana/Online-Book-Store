@@ -16,13 +16,17 @@ public class BookTest {
     }
 
     @Test
-    public void testConstructor() {
+    public void testConstructorAndSetters() {
         assertEquals("Harry Potter", b1.getTitle());
         assertEquals("JK Rowling", b1.getAuthor());
         assertFalse(b1.getReservedStatus());
         assertEquals(10.99, b1.getPrice());
         List<Integer> ratings = new ArrayList<>();
         assertEquals(ratings, b1.getRatings());
+        b1.setAuthor("abc");
+        b1.setTitle("def");
+        assertEquals("abc", b1.getAuthor());
+        assertEquals("def", b1.getTitle());
     }
 
     @Test
