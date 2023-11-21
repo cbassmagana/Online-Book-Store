@@ -32,12 +32,12 @@ public class GraphicalBookStoreApp extends JFrame {
         jsonReader = new JsonReader(JSON_STORE);
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
-        initializeInterface();
+        initializeUserInterface();
     }
 
     // MODIFIES: this
     // EFFECTS: initializes JFrame settings and opens IntroPage card
-    private void initializeInterface() {
+    private void initializeUserInterface() {
         super.add(cardPanel);
         super.setSize(WIDTH, HEIGHT);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -827,13 +827,13 @@ public class GraphicalBookStoreApp extends JFrame {
     }
 
     // EFFECTS: creates and returns JPanel containing a given button with specified border dimensions
-    private JPanel formatButtonRow(JButton b, int top, int left, int bottom, int right) {
-        JPanel p = new JPanel();
-        p.setLayout(new FlowLayout());
-        p.setBorder(BorderFactory.createEmptyBorder(top, left, bottom, right));
-        p.add(b);
+    private JPanel formatButtonRow(JButton button, int top, int left, int bottom, int right) {
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout());
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(top, left, bottom, right));
+        buttonPanel.add(button);
 
-        return p;
+        return buttonPanel;
     }
 
     // EFFECTS: creates and returns JPanel containing a given label and specified border dimensions
@@ -848,10 +848,10 @@ public class GraphicalBookStoreApp extends JFrame {
     }
 
     // EFFECTS: creates and returns JPanel containing a given label and specified border dimensions
-    private JLabel placeHeaderMessage(String msg) {
-        JLabel greeting = new JLabel(msg, JLabel.CENTER);
-        greeting.setSize(WIDTH, 0);
-        return greeting;
+    private JLabel placeHeaderMessage(String message) {
+        JLabel text = new JLabel(message, JLabel.CENTER);
+        text.setSize(WIDTH, 0);
+        return text;
     }
 
     // EFFECTS: saves the company to file, prints message if unable to write to the file
