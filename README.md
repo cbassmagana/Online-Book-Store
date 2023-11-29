@@ -78,9 +78,9 @@ option when initializing the program.
 Here is a sample output of the event log being printed when
 the application is closed:
 
--Tue Nov 28 17:18:35 PST 2023
+Tue Nov 28 17:18:35 PST 2023
 
--The book The Catcher in the Rye was added to Nanaimo Books.
+The book The Catcher in the Rye was added to Nanaimo Books.
 
 Tue Nov 28 17:18:45 PST 2023
 
@@ -126,17 +126,19 @@ would require a bidirectional relation between Book and Branch, as
 Branch would still have a list of Book but each Book would also need a
 single field of Branch. The benefit of this design is that it would be 
 easier to edit books directly without first selecting which branch you
-would like to edit a book in. Additionally, it would make it allow for
+would like to edit a book in. Additionally, it would allow for
 someone to find a book in the company without knowing which branch it 
 was located in. However, the design is currently set up with the idea
-that different branches may have different mangers using the application,
-and this refactoring would make it more difficult to change a branch
+that different branches may have different managers using the application,
+and this refactoring would make it more difficult to edit one branch
 or even keep track of which branch you are making changes to. Also, the 
-list of books in the entire would quickly become very large without the
+list of books in the entire company would quickly become very large without the
 current Branch structure, making it more difficult to scroll through the
-list of all books.
+list of all books. I believe both approaches would produce similar levels
+of coupling and cohesion, however several methods may become more 
+complicated due to the bidirectional relation.
 
-Although this would also require adding some new functionality, I 
+Although this next one would also require adding some new functionality, I 
 would consider refactoring Branch to be an abstract class
 that has various types of stores that could be instantiated. For example,
 a company may have some branches that operate more like libraries that 
@@ -145,3 +147,11 @@ would allow for the program to be more adaptable and scalable to a
 large, intricate book company. However, the company currently assumes 
 that all branches can be instantiated with the same functionality and 
 thus it is currently unnecessary to make this change.
+
+Lastly, Branch could implement the Iterable interface for both its
+inventory and its books sold. This would allow for the company to 
+get its entire inventory and sales more easily by iterating over its
+branches directly. However, this would still be quite similar in terms 
+of required code as Branch would now require an advanced iterator with
+complex overriding of next() and hasNext() to determine when to use
+the inventory and when to use the sales.
