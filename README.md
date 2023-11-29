@@ -75,6 +75,9 @@ option when initializing the program.
 
 ## Phase 4: Task 2:
 
+Here is a sample output of the event log being printed when
+the application is closed:
+
 -Tue Nov 28 17:18:35 PST 2023
 
 -The book The Catcher in the Rye was added to Nanaimo Books.
@@ -111,3 +114,34 @@ Tue Nov 28 17:20:31 PST 2023
 
 The branch Comox Books was created.
 
+## Phase 4: Task 3
+
+There are a couple of ways that I could refactor my program design. 
+One structure change I would consider is having the company hold a 
+list of books directly instead of having a list of branches that then 
+have a list of books. In this case, each book in the company would then
+have a field of type Branch to keep track of which store that given book
+is at instead of having each branch simply have a list of books. This 
+would require a bidirectional relation between Book and Branch, as 
+Branch would still have a list of Book but each Book would also need a
+single field of Branch. The benefit of this design is that it would be 
+easier to edit books directly without first selecting which branch you
+would like to edit a book in. Additionally, it would make it allow for
+someone to find a book in the company without knowing which branch it 
+was located in. However, the design is currently set up with the idea
+that different branches may have different mangers using the application,
+and this refactoring would make it more difficult to change a branch
+or even keep track of which branch you are making changes to. Also, the 
+list of books in the entire would quickly become very large without the
+current Branch structure, making it more difficult to scroll through the
+list of all books.
+
+Although this would also require adding some new functionality, I 
+would consider refactoring Branch to be an abstract class
+that has various types of stores that could be instantiated. For example,
+a company may have some branches that operate more like libraries that 
+loan out books, and some that revolve around one time purchases. This 
+would allow for the program to be more adaptable and scalable to a 
+large, intricate book company. However, the company currently assumes 
+that all branches can be instantiated with the same functionality and 
+thus it is currently unnecessary to make this change.

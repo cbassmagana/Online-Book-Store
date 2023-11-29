@@ -111,13 +111,22 @@
         {
             "address": "123 Fir st.",
             "name": "Richmond Reading",
-            "inventory": [{
-                "reserved": false,
-                "author": "Mark Twain",
-                "price": 12.39,
-                "ratings": [3],
-                "title": "The Adventures of HuckleBerry Finn"
-            }],
+            "inventory": [
+                {
+                    "reserved": false,
+                    "author": "Mark Twain",
+                    "price": 12.39,
+                    "ratings": [3],
+                    "title": "The Adventures of HuckleBerry Finn"
+                },
+                {
+                    "reserved": false,
+                    "author": "Dr Suess",
+                    "price": 13.49,
+                    "ratings": [],
+                    "title": "Frog and Toad"
+                }
+            ],
             "sales": [{
                 "reserved": false,
                 "author": "Charlotte Bronte",
@@ -174,8 +183,11 @@
             "inventory": [{
                 "reserved": false,
                 "author": "Marcel Proust",
-                "price": 21.89,
-                "ratings": [4],
+                "price": 21.99,
+                "ratings": [
+                    4,
+                    2
+                ],
                 "title": "In Search of Lost Time"
             }],
             "sales": [{
