@@ -3,6 +3,8 @@ package ui;
 import model.Book;
 import model.Branch;
 import model.Company;
+import model.EventLog;
+import model.Event;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 import javax.swing.*;
@@ -12,6 +14,8 @@ import java.awt.event.ItemListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 // Graphical Interface application for a book store company
 public class GraphicalBookStoreApp extends JFrame {
@@ -25,7 +29,7 @@ public class GraphicalBookStoreApp extends JFrame {
     private CardLayout cardLayout;
     private JPanel cardPanel;
 
-    // EFFECTS: runs the book store application and instantiates JSON
+    // EFFECTS: runs the book store application, instantiates JSON and GUI window
     public GraphicalBookStoreApp() {
         super("Book Store Manager");
         jsonWriter = new JsonWriter(JSON_STORE);
@@ -47,6 +51,22 @@ public class GraphicalBookStoreApp extends JFrame {
         cardPanel.add(createIntroPage(), "introPage");
         cardLayout.show(cardPanel, "introPage");
         super.setVisible(true);
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                onWindowClosing();
+            }
+        });
+    }
+
+    //EFFECTS: Prints out event log when window is closed.
+    private void onWindowClosing() {
+        EventLog eventLog = EventLog.getInstance();
+
+        for (Event event : eventLog) {
+            System.out.println(event.toString());
+        }
     }
 
     // MODIFIES: this
@@ -788,11 +808,17 @@ public class GraphicalBookStoreApp extends JFrame {
     }
 
     // MODIFIES: this
-    // EFFECTS: creates and returns JPanel with a button for exiting the program
+    // EFFECTS: creates and returns JPanel with a button for exiting
+    //          the program after printing event log
     private JPanel placeQuitButton() {
         JButton quitButton = new JButton("Quit");
 
         quitButton.addActionListener(e -> {
+            EventLog eventLog = EventLog.getInstance();
+
+            for (Event event : eventLog) {
+                System.out.println(event.toString());
+            }
             System.exit(0);
         });
 
@@ -820,6 +846,13 @@ public class GraphicalBookStoreApp extends JFrame {
         });
 
         quitButton.addActionListener(e -> {
+
+            EventLog eventLog = EventLog.getInstance();
+
+            for (Event event : eventLog) {
+                System.out.println(event.toString());
+            }
+
             System.exit(0);
         });
 

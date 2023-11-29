@@ -24,26 +24,32 @@ public class Branch implements Writable {
     }
 
     // MODIFIES: this
-    // EFFECTS: adds a given book to the inventory of this branch
+    // EFFECTS: adds a given book to the inventory of this branch and logs this event in event log
     public void addBook(Book b) {
         this.inventory.add(b);
+        EventLog.getInstance().logEvent(new Event("The book " + b.getTitle() + " was added to "
+                + this.name + "."));
     }
 
     // REQUIRES: book b is in this branch's inventory
     // MODIFIES: this
-    // EFFECTS: removes a given book from the inventory of this branch
+    // EFFECTS: removes a given book from the inventory of this branch and logs this in the event log
     public void removeBook(Book b) {
         this.inventory.remove(b);
+        EventLog.getInstance().logEvent(new Event("The book " + b.getTitle() + " was removed from "
+                + this.name + "."));
     }
 
     // REQUIRES: book b is in this branch's inventory
     // MODIFIES: this
     // EFFECTS: removes a given book from this inventory and adds it to the
-    //          list of books sold
+    //          list of books sold and logs this in the event log
     public void sellBook(Book b) {
         if (!b.getReservedStatus()) {
             this.inventory.remove(b);
             this.booksSold.add(b);
+            EventLog.getInstance().logEvent(new Event("The book " + b.getTitle() + " was sold from "
+                    + this.name + "."));
         }
     }
 

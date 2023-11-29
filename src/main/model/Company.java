@@ -18,15 +18,17 @@ public class Company implements Writable {
     }
 
     // MODIFIES: this
-    // EFFECTS: adds given branch to the list of branches
+    // EFFECTS: adds given branch to the list of branches and logs this in the event log
     public void addBranch(Branch br) {
         this.branches.add(br);
+        EventLog.getInstance().logEvent(new Event("The branch " + br.getName() + " was created."));
     }
 
     // MODIFIES: this
-    // EFFECTS: removes given branch from the list of branches
+    // EFFECTS: removes given branch from the list of branches and logs this in the event log
     public void closeBranch(Branch br) {
         this.branches.remove(br);
+        EventLog.getInstance().logEvent(new Event("The branch " + br.getName() + " was closed."));
     }
 
     // EFFECTS: returns a list of all the books in any of the company's branches' inventories
@@ -79,11 +81,12 @@ public class Company implements Writable {
     }
 
     @Override
-    // EFFECTS: stores the company as a JSON object
+    // EFFECTS: stores the company as a JSON object and logs this event in the event log
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("name", name);
         json.put("branches", branchesToJson());
+        EventLog.getInstance().logEvent(new Event("The state of the company was saved."));
         return json;
     }
 

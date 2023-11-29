@@ -72,3 +72,42 @@ menu screen at any point after initialization.
 - You can reload the state of the application by choosing the "Load from File" 
 option when initializing the program.
 - Additionally, all above user stories have been implemented in the GUI.
+
+## Phase 4: Task 2:
+
+-Tue Nov 28 17:18:35 PST 2023
+
+-The book The Catcher in the Rye was added to Nanaimo Books.
+
+Tue Nov 28 17:18:45 PST 2023
+
+The branch Nanaimo Books was created.
+
+Tue Nov 28 17:18:57 PST 2023
+
+The reservation status of The Iliad was changed to false.
+
+Tue Nov 28 17:19:08 PST 2023
+
+The book The Iliad was added to Comox Books.
+
+Tue Nov 28 17:19:16 PST 2023
+
+The book The Iliad was sold from Comox Books.
+
+Tue Nov 28 17:19:35 PST 2023
+
+The reservation status of Invisible Man was changed to false.
+
+Tue Nov 28 17:19:52 PST 2023
+
+The book Invisible Man was added to Comox Books.
+
+Tue Nov 28 17:20:10 PST 2023
+
+The book Invisible Man was sold from Comox Books.
+
+Tue Nov 28 17:20:31 PST 2023
+
+The branch Comox Books was created.
+

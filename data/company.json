@@ -47,12 +47,13 @@
                         4,
                         4,
                         4,
+                        5,
                         5
                     ],
                     "title": "1984"
                 },
                 {
-                    "reserved": false,
+                    "reserved": true,
                     "author": "Joseph Heller",
                     "price": 13.99,
                     "ratings": [3],

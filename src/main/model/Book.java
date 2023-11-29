@@ -28,9 +28,11 @@ public class Book implements Writable {
     // REQUIRES: 0 <= rating <= 5
     // MODIFIES: this
     // EFFECTS: adds a given rating to the list of ratings for this book and returns the
-    //          new average rating
+    //          new average rating and logs this event in the event log
     public double rateBook(int rating) {
         this.ratings.add(rating);
+        EventLog.getInstance().logEvent(new Event("The book " + this.title + " was rated "
+                + rating + " out of 5."));
         return getAverageRating();
     }
 
@@ -52,22 +54,32 @@ public class Book implements Writable {
     }
 
     // EFFECTS: Sets this book's price to a given price (rounded down to 2 decimal points)
+    //          and logs it in the event log
     public void setPrice(double price) {
         this.price = Math.floor(price * 100) / 100;
+        EventLog.getInstance().logEvent(new Event("The price of " + this.title + " was changed to "
+                + price + " dollars."));
     }
 
+    //EFFECTS: sets the title of the book to given title and logs it in the event log
     public void setTitle(String title) {
+        EventLog.getInstance().logEvent(new Event("The title of " + this.title + " was changed to "
+                + title + "."));
         this.title = title;
     }
 
+    //EFFECTS: sets the author of the book to given author and logs it in the event log
     public void setAuthor(String author) {
         this.author = author;
+        EventLog.getInstance().logEvent(new Event("The author of " + this.title + " was changed to "
+                + author + "."));
     }
 
-
-
+    //EFFECTS: sets reservation status of the book to given status and logs it in the event log
     public void setReservedStatus(boolean status) {
         this.reservedStatus = status;
+        EventLog.getInstance().logEvent(new Event("The reservation status of " + this.title
+                + " was changed to " + status + "."));
     }
 
     public String getTitle() {
