@@ -224,7 +224,6 @@ public class GraphicalBookStoreApp extends JFrame {
         return branchMenuPanel;
     }
 
-
     // MODIFIES: this, branch
     // EFFECTS: creates and returns JPanel for the new book page
     @SuppressWarnings("methodlength")
@@ -544,7 +543,6 @@ public class GraphicalBookStoreApp extends JFrame {
     // EFFECTS: creates and returns JPanel with a button for returning to the main menu
     private JPanel placeReturnToMenuButton() {
         JButton menuButton = new JButton("Return to Menu");
-
         JPanel buttonRow = formatButtonRow(menuButton, 10, 10, 10, 10);
         buttonRow.setSize(300, 0);
 
@@ -715,7 +713,6 @@ public class GraphicalBookStoreApp extends JFrame {
     // EFFECTS: creates and returns JPanel with a button for rating a book
     private JPanel placeRateBookButton(Book book, Branch branch) {
         JButton newRatingButton = new JButton("Submit New Rating");
-
         JPanel buttonRow = formatButtonRow(newRatingButton, 0, 0, 0, 0);
 
         newRatingButton.addActionListener(e -> {
@@ -730,7 +727,6 @@ public class GraphicalBookStoreApp extends JFrame {
     // EFFECTS: creates and returns JPanel with a button for returning to the edit book page
     private JPanel placeReturnToBookButton(Book book, Branch branch) {
         JButton returnToEditBookButton = new JButton("Return to Edit Book");
-
         JPanel buttonRow = formatButtonRow(returnToEditBookButton, 0, 10, 10, 10);
 
         returnToEditBookButton.addActionListener(e -> {
@@ -815,7 +811,6 @@ public class GraphicalBookStoreApp extends JFrame {
 
         quitButton.addActionListener(e -> {
             EventLog eventLog = EventLog.getInstance();
-
             for (Event event : eventLog) {
                 System.out.println(event.toString());
             }
@@ -846,13 +841,10 @@ public class GraphicalBookStoreApp extends JFrame {
         });
 
         quitButton.addActionListener(e -> {
-
             EventLog eventLog = EventLog.getInstance();
-
             for (Event event : eventLog) {
                 System.out.println(event.toString());
             }
-
             System.exit(0);
         });
 

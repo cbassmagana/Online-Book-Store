@@ -3,7 +3,6 @@ package model;
 import java.util.Calendar;
 import java.util.Date;
 
-
 // A representation of an event occurring in the book company
 public class Event {
     private static final int HASH_CONSTANT = 13;
@@ -14,14 +13,6 @@ public class Event {
     public Event(String description) {
         dateLogged = Calendar.getInstance().getTime();
         this.description = description;
-    }
-
-    public Date getDate() {
-        return dateLogged;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     // EFFECTS: Overrides equals to compare two events based on their dates and descriptions
