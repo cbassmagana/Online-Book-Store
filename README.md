@@ -2,7 +2,7 @@
 
 ## About this Project
 
-This application acts as a tool for tracking and organizing a book
+This application serves as a tool for tracking and organizing a book
 company consisting of *various stores*. It is an
 application to be used by a manager/owner of one or more book 
 stores in order to keep track of the business 
@@ -41,8 +41,7 @@ enterprise's inventory.
 that have been sold.
 - I want to be able to mark a book as reserved so 
 that it cannot be sold.
-- I want to be able to select a book and change its
-rating.
+- I want to be able to select a book submit a new rating.
 - I want to be able to see the total value of
 the inventory in each of the store branches.
 - I want to be able to see the total amount of
