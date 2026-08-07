@@ -3,7 +3,7 @@
 ## About this Project
 
 This application serves as a tool for managing a
-company across *various book stores*. It is an
+company across various book stores. It is an
 application to be used to keep track of the business 
 and represent useful information about the different stores. 
 
